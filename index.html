@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AI Ops Lab — AI-агенты, RPA и автоматизация бизнес-процессов</title>
+
+  <meta name="description" content="AI Ops Lab проектирует и внедряет AI-агентов, RAG-системы, n8n-сценарии, голосовых и текстовых роботов, автоворонки, AI-секретарей и интеграции с CRM/ERP." />
+  <meta name="keywords" content="AI агенты, RPA, n8n, Make, RAG, AI интеграции, CRM автоматизация, amoCRM, Bitrix24, 1С, голосовые роботы, AI секретарь, автоворонки, лидогенерация" />
+  <meta name="author" content="AI Ops Lab" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#07070A" />
+
+  <link rel="canonical" href="https://ai-ops-lab.ru/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AI Ops Lab — AI-агенты и автоматизация бизнеса" />
+  <meta property="og:description" content="RPA, n8n, RAG, голосовые роботы, AI-секретари, лидогенерация и контент-завод под задачи бизнеса." />
+  <meta property="og:url" content="https://ai-ops-lab.ru/" />
+  <meta property="og:image" content="https://ai-ops-lab.ru/og-image.png" />
+  <meta property="og:site_name" content="AI Ops Lab" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Ops Lab — AI-агенты и автоматизация бизнеса" />
+  <meta name="twitter:description" content="AI-агенты, RAG-системы, n8n-сценарии, роботы, CRM/ERP-интеграции и автоматизация процессов." />
+  <meta name="twitter:image" content="https://ai-ops-lab.ru/og-image.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AI Ops Lab",
+    "url": "https://ai-ops-lab.ru/",
+    "description": "AI Ops Lab проектирует и внедряет AI-агентов, RAG-системы, RPA-интеграции, n8n-сценарии и автоматизацию бизнес-процессов.",
+    "sameAs": ["https://t.me/chilbilove"],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "Kpi1t@ya.ru",
+      "contactType": "sales",
+      "availableLanguage": ["Russian"]
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AI Ops Lab",
+    "url": "https://ai-ops-lab.ru/",
+    "inLanguage": "ru-RU",
+    "description": "AI-агенты, RPA, RAG, n8n, CRM/ERP-интеграции и автоматизация бизнес-процессов."
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07070a;
+      --card: rgba(255, 255, 255, .065);
+      --card2: rgba(255, 255, 255, .095);
+      --line: rgba(255, 255, 255, .12);
+      --text: #fff;
+      --soft: rgba(255, 255, 255, .74);
+      --muted: rgba(255, 255, 255, .52);
+      --accent: #7c5cff;
+      --accent2: #28e7a6;
+      --accent3: #56b6ff;
+      --radius: 30px;
+      --shadow: 0 26px 90px rgba(0,0,0,.46);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Manrope, Arial, sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(124, 92, 255, .22), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(40, 231, 166, .14), transparent 27%),
+        radial-gradient(circle at 60% 78%, rgba(86, 182, 255, .10), transparent 32%),
+        linear-gradient(115deg, rgba(255,255,255,.035) 0 1px, transparent 1px 22px);
+    }
+
+    a { color: inherit; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(22px);
+      background: rgba(7,7,10,.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, rgba(124,92,255,.42), rgba(40,231,166,.14));
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 0 36px rgba(124,92,255,.22);
+      font-weight: 950;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: var(--soft);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      transition: .22s;
+    }
+
+    .nav a:hover { color: #fff; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 900;
+      transition: .25s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.28); }
+    .btn-primary { background: #fff; color: #111; }
+    .btn-dark { background: rgba(255,255,255,.075); color: #fff; }
+
+    .section {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 92px 24px;
+    }
+
+    .hero {
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 52px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 28px;
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: .92;
+      letter-spacing: -.075em;
+      max-width: 920px;
+    }
+
+    h2 {
+      margin: 12px 0 28px;
+      font-size: clamp(36px, 4.4vw, 64px);
+      line-height: .96;
+      letter-spacing: -.06em;
+    }
+
+    h3 { margin: 0 0 12px; font-size: 24px; line-height: 1.1; letter-spacing: -.035em; }
+
+    .lead {
+      max-width: 760px;
+      color: var(--soft);
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+
+    .hero-panel {
+      position: relative;
+      border-radius: 40px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, var(--card2), var(--card));
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transform: rotate(-1.5deg);
+    }
+
+    .window-dots { display: flex; gap: 8px; margin-bottom: 22px; }
+    .window-dots span { width: 10px; height: 10px; border-radius: 50%; background: #fff; opacity: .42; }
+
+    .flow-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+    .flow-card {
+      min-height: 142px;
+      padding: 22px;
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+    }
+
+    .flow-card small {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: 11px;
+      font-weight: 950;
+      margin-bottom: 16px;
+    }
+
+    .flow-card b { font-size: 32px; letter-spacing: -.05em; }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding-top: 0; }
+    .metric { border: 1px solid var(--line); background: linear-gradient(145deg, var(--card2), var(--card)); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .metric b { display: block; font-size: 40px; letter-spacing: -.05em; margin-bottom: 8px; }
+    .metric p { margin: 0; color: var(--muted); }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+    .card {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, var(--card2), var(--card));
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      transition: .28s ease;
+      min-width: 0;
+    }
+
+    .card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.28); }
+    .card p { color: var(--soft); margin: 0; font-size: 16.5px; }
+    .card .num { display: block; color: var(--muted); font-weight: 950; margin-bottom: 26px; }
+    .card ul { margin: 18px 0 0; padding-left: 18px; color: var(--soft); }
+    .card li { margin: 8px 0; }
+
+    .feature-card { min-height: 330px; display: flex; flex-direction: column; justify-content: space-between; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; color: var(--muted); font-weight: 800; font-size: 12px; }
+
+    .process {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+    }
+
+    .process-item {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      align-items: start;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .process-item::before {
+      content: counter(step, decimal-leading-zero);
+      color: var(--accent2);
+      font-weight: 950;
+      letter-spacing: -.04em;
+      font-size: 28px;
+    }
+
+    .process-item p { margin: 6px 0 0; color: var(--soft); }
+    .solution-card h3 span { color: var(--accent2); }
+
+    .split {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .cta {
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(124,92,255,.28), transparent 36%),
+        linear-gradient(145deg, var(--card2), var(--card));
+      padding: 56px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta p { max-width: 760px; color: var(--soft); font-size: 19px; }
+
+    .footer {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 34px 24px 60px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .nav { display: none; }
+      .hero, .split { grid-template-columns: 1fr; min-height: auto; }
+      .hero-panel { transform: none; }
+      .metrics, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .section { padding: 68px 18px; }
+      h1 { font-size: 44px; }
+      h2 { font-size: 36px; }
+      .flow-grid { grid-template-columns: 1fr; }
+      .cta { padding: 30px; border-radius: 28px; }
+      .footer { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="AI Ops Lab">
+        <span class="brand-mark">AI</span>
+        <span>AI Ops Lab</span>
+      </a>
+      <nav class="nav">
+        <a href="#solutions">Решения</a>
+        <a href="#process">Процесс</a>
+        <a href="#stack">Стек</a>
+        <a href="#candidate">Партнёру</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <a class="btn btn-dark" href="#contact">Обсудить проект</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section hero">
+      <div>
+        <p class="eyebrow">AI Agents + RPA + Integrations</p>
+        <h1>AI-агенты и автоматизация бизнес-процессов под ключ</h1>
+        <p class="lead">Проектируем и внедряем RAG-системы, n8n-сценарии, голосовых и текстовых роботов, AI-секретарей, автоворонки и интеграции с CRM/ERP.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Получить AI-аудит</a>
+          <a class="btn btn-dark" href="#solutions">Смотреть решения</a>
+        </div>
+      </div>
+
+      <div class="hero-panel" aria-label="Схема AI-автоматизации">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="flow-grid">
+          <div class="flow-card"><small>Trigger</small><b>Lead</b></div>
+          <div class="flow-card"><small>Agent</small><b>RAG</b></div>
+          <div class="flow-card"><small>Orchestrator</small><b>n8n</b></div>
+          <div class="flow-card"><small>CRM</small><b>Deal</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section metrics">
+      <article class="metric"><b>24/7</b><p>автоматическая обработка заявок и сообщений</p></article>
+      <article class="metric"><b>RAG</b><p>боты на базе знаний компании, регламентов и цен</p></article>
+      <article class="metric"><b>CRM</b><p>интеграции с Bitrix24, amoCRM, 1С и ERP</p></article>
+      <article class="metric"><b>MVP</b><p>быстрый запуск пилота с понятным ROI</p></article>
+    </section>
+
+    <section class="section" id="solutions">
+      <p class="eyebrow">Каталог решений</p>
+      <h2>Что внедряем</h2>
+      <div class="grid-3">
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">01</span>
+            <h3><span>RPA</span> и AI-агенты</h3>
+            <p>Проектируем сценарии на базе n8n, Make и API: обработка заявок, автоворонки, сервисные процессы, маршрутизация задач и аналитические отчёты.</p>
+          </div>
+          <div class="tag-row"><span class="tag">n8n</span><span class="tag">Make</span><span class="tag">API</span><span class="tag">CRM</span></div>
+        </article>
+
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">02</span>
+            <h3><span>RAG</span>-агент компании</h3>
+            <p>Создаём цифровой мозг компании: бот отвечает по базе знаний, складам, регламентам, скриптам продаж, ценам и внутренним документам.</p>
+          </div>
+          <div class="tag-row"><span class="tag">LangChain</span><span class="tag">LlamaIndex</span><span class="tag">Vector DB</span></div>
+        </article>
+
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">03</span>
+            <h3><span>Лидоруб</span> и outbound AI</h3>
+            <p>AI ищет, квалифицирует и ведёт диалог с холодными лидами, выявляет потребность и передаёт в CRM уже тёплую заявку.</p>
+          </div>
+          <div class="tag-row"><span class="tag">Email</span><span class="tag">CRM</span><span class="tag">Scoring</span></div>
+        </article>
+
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">04</span>
+            <h3>Голосовые и текстовые роботы</h3>
+            <p>Автоматизация входящих и исходящих звонков, первичная квалификация обращений, поддержка клиентов и передача результата менеджеру.</p>
+          </div>
+          <div class="tag-row"><span class="tag">Voice AI</span><span class="tag">Chatbot</span><span class="tag">Support</span></div>
+        </article>
+
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">05</span>
+            <h3>AI-секретарь / Executive Assistant</h3>
+            <p>Автономный агент для почты, календаря, мониторинга конкурентов, подготовки сводок, работы в чатах и контроля поручений.</p>
+          </div>
+          <div class="tag-row"><span class="tag">Email</span><span class="tag">Calendar</span><span class="tag">Monitoring</span></div>
+        </article>
+
+        <article class="card feature-card solution-card">
+          <div>
+            <span class="num">06</span>
+            <h3>Контент-завод</h3>
+            <p>Автоматизируем создание текстов, изображений, видео и сайтов с сохранением Tone of Voice бренда и управлением контент-процессом.</p>
+          </div>
+          <div class="tag-row"><span class="tag">Text</span><span class="tag">Image</span><span class="tag">Video</span><span class="tag">Web</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section split" id="process">
+      <div>
+        <p class="eyebrow">Внедрение</p>
+        <h2>От AI-аудита до работающего MVP</h2>
+        <p class="lead">Не внедряем AI ради AI. Сначала ищем узкие места, считаем эффект, затем собираем MVP и доводим его до реального бизнес-процесса.</p>
+      </div>
+      <div class="process">
+        <article class="process-item"><div><h3>AI-аудит</h3><p>Разбираем продажи, сервис, операционные процессы, CRM/ERP, ручные задачи и точки потерь.</p></div></article>
+        <article class="process-item"><div><h3>Проектирование сценария</h3><p>Описываем логику агента, источники данных, каналы, роли, ограничения и KPI.</p></div></article>
+        <article class="process-item"><div><h3>MVP и интеграции</h3><p>Собираем рабочий прототип: n8n, Python, LLM API, CRM, 1С, базы знаний и каналы связи.</p></div></article>
+        <article class="process-item"><div><h3>Запуск и улучшение</h3><p>Тестируем на реальных данных, считаем стоимость запроса, качество ответов, конверсию и ROI.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <p class="eyebrow">Технологии</p>
+      <h2>Технический арсенал</h2>
+      <div class="grid-3">
+        <article class="card"><h3>AI / LLM</h3><p>OpenAI, Anthropic, Llama, prompt engineering, function calling, structured outputs, agents.</p></article>
+        <article class="card"><h3>RAG</h3><p>LangChain, LlamaIndex, embeddings, vector databases, reranking, knowledge base pipelines.</p></article>
+        <article class="card"><h3>Automation</h3><p>n8n, Make, webhooks, APIs, scheduled workflows, multi-step automations and error handling.</p></article>
+        <article class="card"><h3>CRM / ERP</h3><p>Bitrix24, amoCRM, 1С, ERP integrations, lead scoring, deal creation and client history.</p></article>
+        <article class="card"><h3>Channels</h3><p>Telegram, WhatsApp, VK, email, web widgets, voice bots and omnichannel gateways.</p></article>
+        <article class="card"><h3>Product metrics</h3><p>Стоимость запроса, latency, conversion, accuracy, automation rate and business ROI.</p></article>
+      </div>
+    </section>
+
+    <section class="section split" id="candidate">
+      <div>
+        <p class="eyebrow">Кандидату / партнёру</p>
+        <h2>Ищем интегратора, который собирает решения, а не демо</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card"><h3>Что важно</h3><ul><li>понимать разницу между GPT-чатом и RAG-системой;</li><li>уметь собирать MVP с нуля;</li><li>интегрировать AI с CRM, ERP и API;</li><li>думать продуктово и считать эффект.</li></ul></article>
+        <article class="card"><h3>Что предлагаем</h3><ul><li>удалённый формат и гибкий график;</li><li>экспертов для обучения моделей;</li><li>партнёрство, фикс, KPI или долю;</li><li>первые кейсы и каталог решений.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="cta">
+        <p class="eyebrow">Старт проекта</p>
+        <h2>Готовы найти процессы, где AI даст быстрый ROI?</h2>
+        <p>Напишите, какие задачи хотите автоматизировать: продажи, сервис, RAG-бот, n8n-сценарии, голосовой робот, AI-секретарь или контент-завод.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://t.me/chilbilove" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+          <a class="btn btn-dark" href="mailto:Kpi1t@ya.ru">Kpi1t@ya.ru</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© AI Ops Lab</span>
+    <span>AI Agents • RAG • n8n • CRM • RPA • Content Factory</span>
+  </footer>
+</body>
+</html>
