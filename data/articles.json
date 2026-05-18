@@ -1,0 +1,38 @@
+[
+  {
+    "slug":"corporate-rag-agent",
+    "title":"Корпоративный RAG-агент: как превратить документы в рабочую базу знаний",
+    "description":"Разбираем, как RAG помогает поддержке, продажам и операционным командам отвечать быстрее и точнее.",
+    "category":"RAG",
+    "date":"2026-01-12",
+    "readTime":"6 мин",
+    "url":"news/articles/corporate-rag-agent.html"
+  },
+  {
+    "slug":"ai-sales-crm",
+    "title":"AI в продажах: как агент квалифицирует лиды и обновляет CRM",
+    "description":"Практический сценарий: входящая заявка, уточняющие вопросы, скоринг и передача менеджеру.",
+    "category":"Sales",
+    "date":"2026-01-10",
+    "readTime":"5 мин",
+    "url":"news/articles/ai-sales-crm.html"
+  },
+  {
+    "slug":"voice-ai-first-line",
+    "title":"Голос AI как первая линия клиентского сервиса",
+    "description":"Когда голосовой робот уместен, где нужны ограничения и как передавать результат человеку.",
+    "category":"Голос AI",
+    "date":"2026-01-08",
+    "readTime":"4 мин",
+    "url":"news/articles/voice-ai-first-line.html"
+  },
+  {
+    "slug":"n8n-ai-crm-процесс",
+    "title":"n8n + AI + CRM: минимальный контур автоматизации",
+    "description":"Схема, которая связывает формы, Telegram, почту, AI-логику и CRM без лишней сложности.",
+    "category":"Автоматизация",
+    "date":"2026-01-05",
+    "readTime":"5 мин",
+    "url":"news/articles/n8n-ai-crm-процесс.html"
+  }
+]
