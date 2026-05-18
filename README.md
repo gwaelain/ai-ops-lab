@@ -1,35 +1,34 @@
-# FriendlyAI / AI Ops Lab — News Engine
+# FriendlyAI
 
-## Заменить в репозитории
-- `index.html`
-- `style.css`
-- `article.html`
-- `robots.txt`
-- `sitemap.xml`
-- `README.md`
+AI Agents · Automation · ROI
 
-## Добавить в репозиторий
-- `data/news.json`
-- `js/news.js`
-- `js/article.js`
-- `assets/news-rag.svg`
-- `assets/news-sales.svg`
-- `assets/news-voice.svg`
-- `assets/news-n8n.svg`
-- `news/articles/*.html`
-- `news/images/`
-- `scripts/generate-static-news.py`
-- `scripts/add-news.py`
-- `article-template.html`
+FriendlyAI — сайт AI automation studio: AI-агенты, RAG-системы, n8n-автоматизация, AI-секретари, голосовые роботы и CRM/ERP-интеграции.
 
-## Как работает
-- Главная страница сама выводит новости из `data/news.json`
-- Фильтры по категориям создаются автоматически
-- Статьи можно читать по ссылкам `news/articles/*.html`
-- Новые новости добавляются через `data/news.json`
-- После добавления можно запустить:
-  `python scripts/generate-static-news.py`
+## Website
 
-## Домен
-Файлы настроены под:
 https://friendlyai.ru
+
+## Structure
+
+```text
+/
+├── index.html
+├── article.html
+├── style.css
+├── robots.txt
+├── sitemap.xml
+├── CNAME
+├── 404.html
+├── site.webmanifest
+├── humans.txt
+├── .nojekyll
+├── assets/
+├── data/
+├── js/
+└── news/articles/
+```
+
+## Contacts
+
+Telegram: https://t.me/chilbilove
+Email: Kpi1t@ya.ru
