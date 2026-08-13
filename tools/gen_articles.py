@@ -98,6 +98,26 @@ def load() -> list[dict]:
     return arts
 
 
+def faq_schema(body_html: str) -> dict | None:
+    """Собирает FAQPage из блоков «**Вопрос?** ответ» в конце материала.
+
+    Разметка даёт в поиске раскрывающиеся вопросы под сниппетом — растит кликабельность.
+    """
+    pairs = re.findall(r"<p><strong>([^<]{10,180}\?)</strong>\s*(.{40,600}?)</p>", body_html, re.S)
+    if len(pairs) < 2:
+        return None
+    clean = lambda s: re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", s)).strip()
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": clean(q),
+             "acceptedAnswer": {"@type": "Answer", "text": clean(a)}}
+            for q, a in pairs[:8]
+        ],
+    }
+
+
 def strip_unpublished_links(body_html: str, live_slugs: set[str]) -> str:
     """Снимает ссылки на материалы, которые ещё не вышли.
 
@@ -152,6 +172,9 @@ def page(a: dict, arts: list[dict]) -> str:
         f'<li><a href="/news/articles/{r["slug"]}.html">{e(r["title"])}</a></li>'
         for r in related(a, arts)
     )
+    faq = faq_schema(body)
+    faq_ld = (f'\n  <script type="application/ld+json">{json.dumps(faq, ensure_ascii=False)}</script>'
+              if faq else "")
 
     return f"""<!DOCTYPE html>
 <html lang="ru">
@@ -176,7 +199,7 @@ def page(a: dict, arts: list[dict]) -> str:
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="/article.css" />
   <script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>
-  <script type="application/ld+json">{json.dumps(crumbs, ensure_ascii=False)}</script>
+  <script type="application/ld+json">{json.dumps(crumbs, ensure_ascii=False)}</script>{faq_ld}
 {YM}
 </head>
 <body>
