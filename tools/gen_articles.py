@@ -293,6 +293,25 @@ def write_index_page(arts: list[dict]) -> None:
     (ROOT / "article.html").write_text(page_html, encoding="utf-8")
 
 
+def update_index_html(arts: list[dict], k: int = 4) -> None:
+    """Свежие материалы на главной статикой — ускоряет обход новых страниц."""
+    f = ROOT / "index.html"
+    txt = f.read_text(encoding="utf-8")
+    if "<!-- latest:auto -->" not in txt:
+        return
+    items = "".join(f'''
+          <article class="news-card">
+            <div class="news-meta"><span>{html.escape(a["category"])}</span><time datetime="{a["publish_at"]}">{ru_date(a["publish_at"])}</time></div>
+            <h3><a href="/news/articles/{a["slug"]}.html">{html.escape(a["title"])}</a></h3>
+            <p>{html.escape(a["description"])}</p>
+          </article>''' for a in arts[:k])
+    block = ('      <!-- latest:auto -->\n'
+             f'      <div class="container materials-list">{items}\n      </div>\n'
+             '      <!-- /latest:auto -->')
+    txt = re.sub(r"      <!-- latest:auto -->.*?<!-- /latest:auto -->", block, txt, flags=re.S)
+    f.write_text(txt, encoding="utf-8")
+
+
 def update_sitemap(arts: list[dict]) -> None:
     today = date.today().isoformat()
     static = [("/", "1.0"), ("/article.html", "0.9"), ("/cases.html", "0.8"), ("/audit.html", "0.9")]
@@ -331,6 +350,7 @@ def main() -> None:
 
     write_lists(live)
     write_index_page(live)
+    update_index_html(live)
     update_sitemap(live)
     (ROOT / "tools" / "indexnow-new.txt").write_text("\n".join(fresh), encoding="utf-8")
 

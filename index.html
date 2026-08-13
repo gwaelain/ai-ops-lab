@@ -16,7 +16,7 @@
   <meta property="og:url" content="https://friendlyai.ru/" />
 
 
-  <meta name="twitter:card" content="Сводки_large_image" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="FriendlyAI — AI-агенты · Автоматизация · Результат" />
   <meta name="twitter:description" content="AI-агенты, автоматизация и RAG-системы для бизнеса." />
   <meta name="twitter:image" content="https://friendlyai.ru/assets/og-cover.png" />
@@ -271,6 +271,34 @@
       </div>
       <div class="container news-filters" data-news-filters></div>
       <div class="container news-grid" data-news-grid></div>
+
+      <!-- Свежие материалы статикой: JS-грид выше поисковый робот читает плохо,
+           а ссылки с главной ускоряют обход новых страниц.
+           Блок собирается tools/gen_articles.py — руками не править. -->
+      <!-- latest:auto -->
+      <div class="container materials-list">
+          <article class="news-card">
+            <div class="news-meta"><span>Внедрение</span><time datetime="2026-08-13">13 августа 2026</time></div>
+            <h3><a href="/news/articles/baza-znaniy-dlya-ii-assistenta.html">Как собрать базу знаний, чтобы ИИ-ассистент отвечал точно</a></h3>
+            <p>Разбираем на своём опыте: какие документы годятся в базу знаний, как резать на чанки, что делать с версиями регламентов и кто следит, чтобы база не протухла.</p>
+          </article>
+          <article class="news-card">
+            <div class="news-meta"><span>RAG</span><time datetime="2026-01-12">12 января 2026</time></div>
+            <h3><a href="/news/articles/corporate-rag-agent.html">RAG-агент в компании: доступы, приёмка, эксплуатация</a></h3>
+            <p>Как внедрить RAG-агента по документам компании: кто владелец базы, права доступа по отделам, регламент обновления, критерии приёмки и метрики в проде.</p>
+          </article>
+          <article class="news-card">
+            <div class="news-meta"><span>Sales</span><time datetime="2026-01-10">10 января 2026</time></div>
+            <h3><a href="/news/articles/ai-sales-crm.html">AI в продажах: как агент квалифицирует лиды и обновляет CRM</a></h3>
+            <p>AI-агент может принять входящую заявку, задать уточняющие вопросы, определить потенциал клиента и передать менеджеру уже подготовленную карточку.</p>
+          </article>
+          <article class="news-card">
+            <div class="news-meta"><span>Голос AI</span><time datetime="2026-01-08">08 января 2026</time></div>
+            <h3><a href="/news/articles/voice-ai-first-line.html">Голос AI как первая линия клиентского сервиса</a></h3>
+            <p>Голосовой AI закрывает повторяемые звонки, но должен иметь понятные ограничения и корректную передачу сложных случаев человеку.</p>
+          </article>
+      </div>
+      <!-- /latest:auto -->
     </section>
 
     <section class="section section-reveal" id="process">
