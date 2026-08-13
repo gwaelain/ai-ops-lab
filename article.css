@@ -78,3 +78,8 @@
 @media (max-width: 680px) {
   .article-related, .materials-list .news-card { padding: 20px; border-radius: 22px; }
 }
+
+/* Страницы услуг (tools/gen_services.py) — коммерческие, с акцентом на цене и этапах */
+.article-content h2:first-child { margin-top: 0; }
+.article-meta span:only-child { background: rgba(157,124,255,.14); border-color: rgba(157,124,255,.35); color: #cdbcff; }
+.article-content th { background: rgba(157,124,255,.10); }

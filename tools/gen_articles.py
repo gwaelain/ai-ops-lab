@@ -52,6 +52,7 @@ HEADER = """<header class="site-header">
       </a>
       <nav class="nav" aria-label="Main navigation">
         <a href="/#solutions">Решения</a>
+        <a href="/services/">Услуги</a>
         <a href="/#cases">Кейсы</a>
         <a href="/#approach">Подход</a>
         <a href="/article.html">Материалы</a>
@@ -335,13 +336,19 @@ def update_index_html(arts: list[dict], k: int = 4) -> None:
     f.write_text(txt, encoding="utf-8")
 
 
-def update_sitemap(arts: list[dict]) -> None:
+def update_sitemap(arts: list[dict], services: list[dict] | None = None) -> None:
     today = date.today().isoformat()
     static = [("/", "1.0"), ("/article.html", "0.9"), ("/cases.html", "0.8"), ("/audit.html", "0.9")]
+    if services:
+        static.append(("/services/", "0.9"))
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for path, pri in static:
         lines.append(f"  <url><loc>{DOMAIN}{path}</loc><lastmod>{today}</lastmod><priority>{pri}</priority></url>")
+    # страницы услуг — приоритет выше материалов: ради них сайт и существует
+    for s in (services or []):
+        lines.append(f"  <url><loc>{DOMAIN}/services/{s['slug']}.html</loc>"
+                     f"<lastmod>{s.get('updated_at', today)}</lastmod><priority>0.9</priority></url>")
     for a in arts:
         lines.append(
             f"  <url><loc>{DOMAIN}/news/articles/{a['slug']}.html</loc>"
@@ -371,10 +378,22 @@ def main() -> None:
     seen_file.write_text(json.dumps(sorted(seen | {a["slug"] for a in live}),
                                     ensure_ascii=False, indent=1), encoding="utf-8")
 
+    # страницы услуг собираются тем же прогоном, иначе о них забудут при публикации
+    import gen_services
+    services = gen_services.load()
+    if services:
+        gen_services.build()
+        for s in services:
+            key = f"service:{s['slug']}"
+            if key not in seen:
+                fresh.append(f"{DOMAIN}/services/{s['slug']}.html")
+                seen.add(key)
+        seen_file.write_text(json.dumps(sorted(seen), ensure_ascii=False, indent=1), encoding="utf-8")
+
     write_lists(live)
     write_index_page(live)
     update_index_html(live)
-    update_sitemap(live)
+    update_sitemap(live, services)
     (ROOT / "tools" / "indexnow-new.txt").write_text("\n".join(fresh), encoding="utf-8")
 
     print(f"опубликовано материалов: {len(live)} (новых: {len(fresh)}), "
