@@ -315,13 +315,19 @@ def main() -> None:
     live = arts if show_all else [a for a in arts if a["publish_at"] <= today]
 
     OUT.mkdir(parents=True, exist_ok=True)
-    existing = {p.name for p in OUT.glob("*.html")}
+    # список опубликованного держим файлом: наличие html на диске больше не признак
+    # публикации — собранные страницы едут в репозиторий вместе с исходниками
+    seen_file = ROOT / "tools" / "published.json"
+    seen = set(json.loads(seen_file.read_text(encoding="utf-8"))) if seen_file.exists() else set()
+
     fresh = []
     for a in live:
         name = f"{a['slug']}.html"
-        if name not in existing:
+        if a["slug"] not in seen:
             fresh.append(f"{DOMAIN}/news/articles/{name}")
         (OUT / name).write_text(page(a, live), encoding="utf-8")
+    seen_file.write_text(json.dumps(sorted(seen | {a["slug"] for a in live}),
+                                    ensure_ascii=False, indent=1), encoding="utf-8")
 
     write_lists(live)
     write_index_page(live)
