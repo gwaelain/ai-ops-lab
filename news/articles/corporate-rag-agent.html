@@ -3,34 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FriendlyAI — материал</title>
-  <meta name="description" content="Материал FriendlyAI про AI-агентов, RAG и автоматизацию бизнеса." />
+  <title>Корпоративный RAG-агент: как превратить документы в рабочую базу знаний — FriendlyAI</title>
+  <meta name="description" content="RAG-система помогает AI отвечать не из общего интернета, а из проверенных материалов компании: регламентов, инструкций, прайсов, FAQ и внутренних документов." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#070a13" />
-  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="../../style.css" />
+  <link rel="canonical" href="https://friendlyai.ru/news/articles/corporate-rag-agent.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="FriendlyAI" />
+  <meta property="og:title" content="Корпоративный RAG-агент: как превратить документы в рабочую базу знаний" />
+  <meta property="og:description" content="RAG-система помогает AI отвечать не из общего интернета, а из проверенных материалов компании: регламентов, инструкций, прайсов, FAQ и внутренних документов." />
+  <meta property="og:url" content="https://friendlyai.ru/news/articles/corporate-rag-agent.html" />
+  <meta property="og:image" content="https://friendlyai.ru/assets/og-cover.png" />
+  <meta property="article:published_time" content="2026-01-12" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/article.css" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Корпоративный RAG-агент: как превратить документы в рабочую базу знаний", "description": "RAG-система помогает AI отвечать не из общего интернета, а из проверенных материалов компании: регламентов, инструкций, прайсов, FAQ и внутренних документов.", "image": "https://friendlyai.ru/assets/og-cover.png", "datePublished": "2026-01-12", "dateModified": "2026-01-12", "author": {"@type": "Organization", "name": "FriendlyAI", "url": "https://friendlyai.ru/"}, "publisher": {"@type": "Organization", "name": "FriendlyAI", "logo": {"@type": "ImageObject", "url": "https://friendlyai.ru/assets/icon-512.png"}}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://friendlyai.ru/news/articles/corporate-rag-agent.html"}, "inLanguage": "ru-RU"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://friendlyai.ru/"}, {"@type": "ListItem", "position": 2, "name": "Материалы", "item": "https://friendlyai.ru/article.html"}, {"@type": "ListItem", "position": 3, "name": "Корпоративный RAG-агент: как превратить документы в рабочую базу знаний", "item": "https://friendlyai.ru/news/articles/corporate-rag-agent.html"}]}</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0];
+  k.async=1;k.src=r;a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=111571847','ym');
+  ym(111571847,'init',{webvisor:true,clickmap:true,trackLinks:true,accurateTrackBounce:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111571847" style="position:absolute;left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <div class="page-bg" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="../../index.html">
+      <a class="brand" href="/" aria-label="FriendlyAI home">
         <span class="brand-mark"><span></span></span>
-        <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
+        <span class="brand-copy">
+          <strong>FriendlyAI</strong>
+          <small>AI-агенты · Автоматизация · Результат</small>
+        </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="../../index.html#solutions">Решения</a>
-        <a href="../../index.html#approach">Подход</a>
-        <a href="../../index.html#news">Материалы</a>
-        <a href="../../index.html#process">Процесс</a>
-        <a href="../../index.html#stack">Стек</a>
+        <a href="/#solutions">Решения</a>
+        <a href="/#cases">Кейсы</a>
+        <a href="/#approach">Подход</a>
+        <a href="/article.html">Материалы</a>
+        <a href="/audit.html">AI-аудит</a>
       </nav>
       <a class="header-cta" href="https://t.me/chilbilove" target="_blank" rel="noopener noreferrer">AI-аудит</a>
     </div>
   </header>
-  <main class="article-page"><div class="container" data-article></div></main>
-  <script src="../../js/article.js"></script>
-  <script src="../../js/main.js"></script>
+  <main class="article-page">
+    <div class="container article-shell">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a> · <a href="/article.html">Материалы</a> · <span>RAG</span>
+      </nav>
+      <div class="article-meta">
+        <span>RAG</span>
+        <time datetime="2026-01-12">12 января 2026</time>
+        <span>2 мин</span>
+      </div>
+      <h1>Корпоративный RAG-агент: как превратить документы в рабочую базу знаний</h1>
+      <p class="article-lead">RAG-система помогает AI отвечать не из общего интернета, а из проверенных материалов компании: регламентов, инструкций, прайсов, FAQ и внутренних документов.</p>
+      <article class="article-content">
+    <h2>Зачем бизнесу RAG</h2>
+    <p>Обычный чат-бот быстро упирается в ограничение: он не знает актуальных внутренних правил компании. RAG-агент получает доступ к базе знаний и формирует ответ на основе конкретных фрагментов документов.</p>
+    <h2>Где это работает лучше всего</h2>
+    <p>Поддержка клиентов, обучение сотрудников, продажи, технические консультации, работа с регламентами, подбор товаров и быстрый поиск по внутренним материалам.</p>
+    <h2>Что важно учесть</h2>
+    <p>Нужны чистые источники данных, роли доступа, логика обновления документов, проверка ответов, fallback-сценарии и понятные метрики качества.</p>
+      </article>
+      <section class="article-cta">
+        <h2>Хотите такой же процесс у себя?</h2>
+        <p>Начните с AI-аудита: разберём процессы, покажем, где автоматизация окупится первой, и предложим сценарий внедрения.</p>
+        <div class="article-actions">
+          <a class="btn btn-primary" href="/audit.html">Запросить AI-аудит</a>
+          <a class="btn btn-secondary" href="https://t.me/chilbilove" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+        </div>
+      </section>
+      <aside class="article-related">
+        <h2>Читайте дальше</h2>
+        <ul><li><a href="/news/articles/ai-sales-crm.html">AI в продажах: как агент квалифицирует лиды и обновляет CRM</a></li><li><a href="/news/articles/voice-ai-first-line.html">Голос AI как первая линия клиентского сервиса</a></li><li><a href="/news/articles/n8n-ai-crm-workflow.html">n8n + AI + CRM: минимальный контур автоматизации</a></li></ul>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark"><span></span></span>
+        <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
+      </a>
+      <p>© 2026 FriendlyAI. AI-агенты · RAG · Автоматизация · CRM.</p>
+    </div>
+  </footer>
 </body>
 </html>

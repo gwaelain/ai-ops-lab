@@ -3,49 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Материалы — FriendlyAI</title>
-  <meta name="description" content="Материалы FriendlyAI про AI-агентов, RAG, n8n, CRM/ERP-интеграции и автоматизацию бизнес-процессов." />
+  <title>Материалы про AI-агентов, RAG и автоматизацию — FriendlyAI</title>
+  <meta name="description" content="Разборы про AI-агентов, RAG-системы, n8n-автоматизацию и внедрение ИИ в бизнес: практика, цифры и честные ограничения." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#070a13" />
   <link rel="canonical" href="https://friendlyai.ru/article.html" />
-
-  <meta name="twitter:card" content="Сводки_large_image" />
-  <meta name="twitter:title" content="FriendlyAI — AI-агенты · Автоматизация · Результат" />
-  <meta name="twitter:description" content="AI-агенты, автоматизация и RAG-системы для бизнеса." />
-  <meta name="twitter:image" content="https://friendlyai.ru/assets/og-cover.png" />
-
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="assets/favicon.ico" sizes="any" />
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="stylesheet" href="style.css" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Материалы — FriendlyAI" />
+  <meta property="og:description" content="Практика внедрения ИИ: агенты, RAG, автоматизация процессов." />
+  <meta property="og:url" content="https://friendlyai.ru/article.html" />
+  <meta property="og:image" content="https://friendlyai.ru/assets/og-cover.png" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/article.css" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "url": "https://friendlyai.ru/news/articles/corporate-rag-agent.html", "name": "Корпоративный RAG-агент: как превратить документы в рабочую базу знаний"}, {"@type": "ListItem", "position": 2, "url": "https://friendlyai.ru/news/articles/ai-sales-crm.html", "name": "AI в продажах: как агент квалифицирует лиды и обновляет CRM"}, {"@type": "ListItem", "position": 3, "url": "https://friendlyai.ru/news/articles/voice-ai-first-line.html", "name": "Голос AI как первая линия клиентского сервиса"}, {"@type": "ListItem", "position": 4, "url": "https://friendlyai.ru/news/articles/n8n-ai-crm-workflow.html", "name": "n8n + AI + CRM: минимальный контур автоматизации"}]}</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0];
+  k.async=1;k.src=r;a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=111571847','ym');
+  ym(111571847,'init',{webvisor:true,clickmap:true,trackLinks:true,accurateTrackBounce:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111571847" style="position:absolute;left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <div class="page-bg" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
-
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html">
+      <a class="brand" href="/" aria-label="FriendlyAI home">
         <span class="brand-mark"><span></span></span>
-        <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
+        <span class="brand-copy">
+          <strong>FriendlyAI</strong>
+          <small>AI-агенты · Автоматизация · Результат</small>
+        </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="index.html#solutions">Решения</a>
-        <a href="index.html#approach">Подход</a>
-        <a href="index.html#news">Материалы</a>
-        <a href="index.html#process">Процесс</a>
-        <a href="index.html#stack">Стек</a>
+        <a href="/#solutions">Решения</a>
+        <a href="/#cases">Кейсы</a>
+        <a href="/#approach">Подход</a>
+        <a href="/article.html">Материалы</a>
+        <a href="/audit.html">AI-аудит</a>
       </nav>
       <a class="header-cta" href="https://t.me/chilbilove" target="_blank" rel="noopener noreferrer">AI-аудит</a>
     </div>
   </header>
-
   <main class="article-page">
-    <div class="container" data-article></div>
+    <div class="container">
+      <div class="section-head">
+        <p>Материалы</p>
+        <h1>Разборы про AI-агентов, RAG и автоматизацию</h1>
+        <p class="article-lead">Пишем то, что проверили руками: где ИИ даёт результат, где ломается и сколько это стоит на самом деле.</p>
+      </div>
+      <div class="materials-list">
+        <article class="news-card">
+          <div class="news-meta"><span>RAG</span><time datetime="2026-01-12">12 января 2026</time><span>2 мин</span></div>
+          <h2><a href="/news/articles/corporate-rag-agent.html">Корпоративный RAG-агент: как превратить документы в рабочую базу знаний</a></h2>
+          <p>RAG-система помогает AI отвечать не из общего интернета, а из проверенных материалов компании: регламентов, инструкций, прайсов, FAQ и внутренних документов.</p>
+          <a class="text-link" href="/news/articles/corporate-rag-agent.html">Читать материал →</a>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span>Sales</span><time datetime="2026-01-10">10 января 2026</time><span>2 мин</span></div>
+          <h2><a href="/news/articles/ai-sales-crm.html">AI в продажах: как агент квалифицирует лиды и обновляет CRM</a></h2>
+          <p>AI-агент может принять входящую заявку, задать уточняющие вопросы, определить потенциал клиента и передать менеджеру уже подготовленную карточку.</p>
+          <a class="text-link" href="/news/articles/ai-sales-crm.html">Читать материал →</a>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span>Голос AI</span><time datetime="2026-01-08">08 января 2026</time><span>2 мин</span></div>
+          <h2><a href="/news/articles/voice-ai-first-line.html">Голос AI как первая линия клиентского сервиса</a></h2>
+          <p>Голосовой AI закрывает повторяемые звонки, но должен иметь понятные ограничения и корректную передачу сложных случаев человеку.</p>
+          <a class="text-link" href="/news/articles/voice-ai-first-line.html">Читать материал →</a>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span>Автоматизация</span><time datetime="2026-01-05">05 января 2026</time><span>2 мин</span></div>
+          <h2><a href="/news/articles/n8n-ai-crm-workflow.html">n8n + AI + CRM: минимальный контур автоматизации</a></h2>
+          <p>Минимальный контур соединяет форму заявки, Telegram, почту, AI-обработку, CRM и уведомления команды.</p>
+          <a class="text-link" href="/news/articles/n8n-ai-crm-workflow.html">Читать материал →</a>
+        </article>
+      </div>
+    </div>
   </main>
-
-  <script src="js/article.js"></script>
-  <script src="js/main.js"></script>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark"><span></span></span>
+        <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
+      </a>
+      <p>© 2026 FriendlyAI. AI-агенты · RAG · Автоматизация · CRM.</p>
+    </div>
+  </footer>
 </body>
 </html>

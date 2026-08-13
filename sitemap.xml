@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://friendlyai.ru/</loc><priority>1.0</priority></url>
-  <url><loc>https://friendlyai.ru/cases.html</loc><priority>0.9</priority></url>
-  <url><loc>https://friendlyai.ru/audit.html</loc><priority>0.9</priority></url>
-  <url><loc>https://friendlyai.ru/article.html</loc><priority>0.8</priority></url>
-  <url><loc>https://friendlyai.ru/news/articles/corporate-rag-agent.html</loc><priority>0.8</priority></url>
-  <url><loc>https://friendlyai.ru/news/articles/ai-sales-crm.html</loc><priority>0.8</priority></url>
-  <url><loc>https://friendlyai.ru/news/articles/voice-ai-first-line.html</loc><priority>0.8</priority></url>
-  <url><loc>https://friendlyai.ru/news/articles/n8n-ai-crm-процесс.html</loc><priority>0.8</priority></url>
+  <url><loc>https://friendlyai.ru/</loc><lastmod>2026-08-13</lastmod><priority>1.0</priority></url>
+  <url><loc>https://friendlyai.ru/article.html</loc><lastmod>2026-08-13</lastmod><priority>0.9</priority></url>
+  <url><loc>https://friendlyai.ru/cases.html</loc><lastmod>2026-08-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://friendlyai.ru/audit.html</loc><lastmod>2026-08-13</lastmod><priority>0.9</priority></url>
+  <url><loc>https://friendlyai.ru/news/articles/corporate-rag-agent.html</loc><lastmod>2026-01-12</lastmod><priority>0.7</priority></url>
+  <url><loc>https://friendlyai.ru/news/articles/ai-sales-crm.html</loc><lastmod>2026-01-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://friendlyai.ru/news/articles/voice-ai-first-line.html</loc><lastmod>2026-01-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://friendlyai.ru/news/articles/n8n-ai-crm-workflow.html</loc><lastmod>2026-01-05</lastmod><priority>0.7</priority></url>
 </urlset>
