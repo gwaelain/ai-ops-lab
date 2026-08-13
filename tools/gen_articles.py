@@ -98,6 +98,23 @@ def load() -> list[dict]:
     return arts
 
 
+def strip_unpublished_links(body_html: str, live_slugs: set[str]) -> str:
+    """Снимает ссылки на материалы, которые ещё не вышли.
+
+    Материалы ссылаются друг на друга, а публикуются по одному в день — до выхода
+    соседа ссылка вела бы в 404. Разметку снимаем, текст оставляем; когда сосед
+    выйдет, следующая сборка вернёт ссылку.
+    """
+    def repl(m: re.Match) -> str:
+        href, text = m.group(1), m.group(2)
+        mm = re.match(r"^/news/articles/([a-z0-9\-]+)\.html$", href)
+        if mm and mm.group(1) not in live_slugs:
+            return text
+        return m.group(0)
+
+    return re.sub(r'<a href="([^"]+)">(.*?)</a>', repl, body_html, flags=re.S)
+
+
 def related(art: dict, arts: list[dict], k: int = 3) -> list[dict]:
     same = [a for a in arts if a["slug"] != art["slug"] and a["category"] == art["category"]]
     rest = [a for a in arts if a["slug"] != art["slug"] and a not in same]
@@ -108,7 +125,7 @@ def page(a: dict, arts: list[dict]) -> str:
     e = html.escape
     url = f"{DOMAIN}/news/articles/{a['slug']}.html"
     iso = a["publish_at"]
-    body = md_to_html(a["_body"])
+    body = strip_unpublished_links(md_to_html(a["_body"]), {x["slug"] for x in arts})
     kws = a.get("keywords") or []
     kw_meta = f'\n  <meta name="keywords" content="{e(", ".join(kws))}" />' if kws else ""
 
