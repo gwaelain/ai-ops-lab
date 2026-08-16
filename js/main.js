@@ -16,7 +16,7 @@ if ('IntersectionObserver' in window) {
 }
 
 
-const canHover = window.matchМедиа('(hover: hover) and (pointer: fine)').matches;
+const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 if (canHover) {
   const glow = document.createElement('div');
   glow.className = 'mouse-glow';
@@ -40,7 +40,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 document.querySelectorAll('[data-audit-form]').forEach((form) => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const data = new FormДанные(form);
+    const data = new FormData(form);
     const name = (data.get('name') || '').toString().trim() || 'Не указано';
     const contact = (data.get('contact') || '').toString().trim() || 'Не указано';
     const task = (data.get('task') || '').toString().trim() || 'Не указано';
@@ -48,9 +48,9 @@ document.querySelectorAll('[data-audit-form]').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
     try {
       await navigator.clipboard.writeText(text);
-      if (note) note.textКонтент = 'Заявка скопирована. Вставьте её в Telegram-диалог.';
+      if (note) note.textContent = 'Заявка скопирована. Вставьте её в Telegram-диалог.';
     } catch (error) {
-      if (note) note.textКонтент = 'Заявка сформирована. Скопируйте текст из полей и отправьте в Telegram.';
+      if (note) note.textContent = 'Заявка сформирована. Скопируйте текст из полей и отправьте в Telegram.';
     }
     window.open('https://t.me/chilbilove', '_blank', 'noopener,noreferrer');
   });
