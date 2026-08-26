@@ -27,6 +27,7 @@ from md import frontmatter, md_to_html, md_to_text  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "content" / "services"
 OUT = ROOT / "services"
+PAGES_SRC = ROOT / "content" / "pages"
 DOMAIN = "https://friendlyai.ru"
 SITE = "FriendlyAI"
 TG = "https://t.me/chilbilove"
@@ -48,6 +49,7 @@ HEADER = """<header class="site-header">
         <a href="/#approach">Подход</a>
         <a href="/article.html">Материалы</a>
         <a href="/audit.html">AI-аудит</a>
+        <a href="/contacts.html">Контакты</a>
       </nav>
       <a class="header-cta" href="%s" target="_blank" rel="noopener noreferrer">AI-аудит</a>
     </div>
@@ -60,6 +62,7 @@ FOOTER = """<footer class="footer">
         <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
       </a>
       <p>© 2026 FriendlyAI. AI-агенты · RAG · Автоматизация · CRM.</p>
+      <p><a href="/about.html">О студии</a> · <a href="/contacts.html">Контакты</a> · <a href="/privacy.html">Обработка данных</a></p>
     </div>
   </footer>"""
 
@@ -240,6 +243,82 @@ def index_page(items: list[dict]) -> str:
 """
 
 
+def load_pages() -> list[dict]:
+    """Обычные страницы сайта: о студии, контакты, политика."""
+    items = []
+    if not PAGES_SRC.exists():
+        return items
+    for f in sorted(PAGES_SRC.glob("*.md")):
+        meta, body = frontmatter(f.read_text(encoding="utf-8"))
+        meta.setdefault("slug", f.stem)
+        text = md_to_text(body)
+        meta.setdefault("title", meta["slug"])
+        meta.setdefault("h1", meta["title"])
+        meta.setdefault("description", text[:157].rsplit(" ", 1)[0] + "…")
+        meta.setdefault("lead", meta["description"])
+        meta["_body"] = body
+        meta["_words"] = len(text.split())
+        items.append(meta)
+    return items
+
+
+def page_simple(a: dict) -> str:
+    """Страница без разметки услуги и без продающего CTA."""
+    e = html.escape
+    url = f"{DOMAIN}/{a['slug']}.html"
+    body = md_to_html(a["_body"])
+    robots = "noindex, follow" if str(a.get("noindex", "")).lower() in ("true", "1", "yes") else "index, follow"
+    crumbs = {
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Главная", "item": f"{DOMAIN}/"},
+            {"@type": "ListItem", "position": 2, "name": a["h1"], "item": url},
+        ],
+    }
+    return f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{e(a['title'])}</title>
+  <meta name="description" content="{e(a['description'])}" />
+  <meta name="robots" content="{robots}" />
+  <meta name="theme-color" content="#070a13" />
+  <link rel="canonical" href="{url}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{SITE}" />
+  <meta property="og:title" content="{e(a['title'])}" />
+  <meta property="og:description" content="{e(a['description'])}" />
+  <meta property="og:url" content="{url}" />
+  <meta property="og:image" content="{DOMAIN}/assets/og-cover.png" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/article.css" />
+  <script type="application/ld+json">{json.dumps(crumbs, ensure_ascii=False)}</script>
+{YM}
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  {HEADER}
+  <main class="article-page">
+    <div class="container article-shell">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a> · <span>{e(a['h1'])}</span>
+      </nav>
+      <h1>{e(a['h1'])}</h1>
+      <p class="article-lead">{e(a['lead'])}</p>
+      <article class="article-content">
+    {body}
+      </article>
+    </div>
+  </main>
+  {FOOTER}
+</body>
+</html>
+"""
+
+
 def build() -> list[str]:
     items = load()
     if not items:
@@ -249,10 +328,19 @@ def build() -> list[str]:
     for s in items:
         (OUT / f"{s['slug']}.html").write_text(page(s, items), encoding="utf-8")
     (OUT / "index.html").write_text(index_page(items), encoding="utf-8")
+
+    pages = load_pages()
+    for a in pages:
+        (ROOT / f"{a['slug']}.html").write_text(page_simple(a), encoding="utf-8")
+    if pages:
+        print(f"собрано страниц сайта: {len(pages)} ({', '.join(a['slug'] for a in pages)})")
     print(f"собрано страниц услуг: {len(items)}")
     for s in items:
         print("  ", s["slug"], f"{s['_words']} слов")
-    return [f"{DOMAIN}/services/{s['slug']}.html" for s in items] + [f"{DOMAIN}/services/"]
+    urls = [f"{DOMAIN}/services/{s['slug']}.html" for s in items] + [f"{DOMAIN}/services/"]
+    urls += [f"{DOMAIN}/{a['slug']}.html" for a in pages
+             if str(a.get("noindex", "")).lower() not in ("true", "1", "yes")]
+    return urls
 
 
 if __name__ == "__main__":

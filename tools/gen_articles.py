@@ -57,6 +57,7 @@ HEADER = """<header class="site-header">
         <a href="/#approach">Подход</a>
         <a href="/article.html">Материалы</a>
         <a href="/audit.html">AI-аудит</a>
+        <a href="/contacts.html">Контакты</a>
       </nav>
       <a class="header-cta" href="%s" target="_blank" rel="noopener noreferrer">AI-аудит</a>
     </div>
@@ -69,6 +70,7 @@ FOOTER = """<footer class="footer">
         <span class="brand-copy"><strong>FriendlyAI</strong><small>AI-агенты · Автоматизация · Результат</small></span>
       </a>
       <p>© 2026 FriendlyAI. AI-агенты · RAG · Автоматизация · CRM.</p>
+      <p><a href="/about.html">О студии</a> · <a href="/contacts.html">Контакты</a> · <a href="/privacy.html">Обработка данных</a></p>
     </div>
   </footer>"""
 
@@ -336,7 +338,8 @@ def update_index_html(arts: list[dict], k: int = 4) -> None:
     f.write_text(txt, encoding="utf-8")
 
 
-def update_sitemap(arts: list[dict], services: list[dict] | None = None) -> None:
+def update_sitemap(arts: list[dict], services: list[dict] | None = None,
+                   pages: list[dict] | None = None) -> None:
     today = date.today().isoformat()
     static = [("/", "1.0"), ("/article.html", "0.9"), ("/cases.html", "0.8"), ("/audit.html", "0.9")]
     if services:
@@ -349,6 +352,13 @@ def update_sitemap(arts: list[dict], services: list[dict] | None = None) -> None
     for s in (services or []):
         lines.append(f"  <url><loc>{DOMAIN}/services/{s['slug']}.html</loc>"
                      f"<lastmod>{s.get('updated_at', today)}</lastmod><priority>0.9</priority></url>")
+    # «О студии», «Контакты» и подобные: приоритет ниже услуг, но роботу они нужны —
+    # именно по таким страницам поиск судит, что за компанией стоят живые люди
+    for a in (pages or []):
+        if str(a.get("noindex", "")).lower() in ("true", "1", "yes"):
+            continue
+        lines.append(f"  <url><loc>{DOMAIN}/{a['slug']}.html</loc>"
+                     f"<lastmod>{a.get('updated_at', today)}</lastmod><priority>0.6</priority></url>")
     for a in arts:
         lines.append(
             f"  <url><loc>{DOMAIN}/news/articles/{a['slug']}.html</loc>"
@@ -381,6 +391,7 @@ def main() -> None:
     # страницы услуг собираются тем же прогоном, иначе о них забудут при публикации
     import gen_services
     services = gen_services.load()
+    site_pages = gen_services.load_pages()
     if services:
         gen_services.build()
         for s in services:
@@ -393,7 +404,7 @@ def main() -> None:
     write_lists(live)
     write_index_page(live)
     update_index_html(live)
-    update_sitemap(live, services)
+    update_sitemap(live, services, site_pages)
     (ROOT / "tools" / "indexnow-new.txt").write_text("\n".join(fresh), encoding="utf-8")
 
     print(f"опубликовано материалов: {len(live)} (новых: {len(fresh)}), "
