@@ -341,7 +341,11 @@ def update_index_html(arts: list[dict], k: int = 4) -> None:
 def update_sitemap(arts: list[dict], services: list[dict] | None = None,
                    pages: list[dict] | None = None) -> None:
     today = date.today().isoformat()
-    static = [("/", "1.0"), ("/article.html", "0.9"), ("/cases.html", "0.8"), ("/audit.html", "0.9")]
+    # privacy.html лежит в репозитории и на неё ссылается подвал, но в карту сайта
+    # её забыли внести — для поисковиков страница была сиротой. Приоритет низкий:
+    # юридическая страница, в выдаче ей делать нечего, важно само присутствие.
+    static = [("/", "1.0"), ("/article.html", "0.9"), ("/cases.html", "0.8"),
+              ("/audit.html", "0.9"), ("/privacy.html", "0.3")]
     if services:
         static.append(("/services/", "0.9"))
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
