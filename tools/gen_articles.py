@@ -381,6 +381,51 @@ def update_sitemap(arts: list[dict], services: list[dict] | None = None,
     (ROOT / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def write_rss(arts: list[dict], limit: int = 20) -> None:
+    """Лента для Дзена и агрегаторов: rss.xml с полными текстами.
+
+    У Дзена нет открытого API для публикации — материалы он забирает импортом
+    из RSS, и ему нужен полный текст в content:encoded, иначе запись повиснет
+    черновиком. В ленту попадают только последние записи, старые вымываются.
+    """
+    fresh = sorted(arts, key=lambda a: a["publish_at"], reverse=True)[:limit]
+    esc = lambda t: html.escape(t, quote=False)
+    items = []
+    for a in fresh:
+        body = md_to_html(a["_body"])
+        body = re.sub(r'href="/', f'href="{DOMAIN}/', body)
+        body = re.sub(r'src="/', f'src="{DOMAIN}/', body)
+        pub = datetime.strptime(a["publish_at"], "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0500")
+        url = f"{DOMAIN}/news/articles/{a['slug']}.html"
+        items.append(f"""    <item>
+      <title>{esc(a['title'])}</title>
+      <link>{url}</link>
+      <guid isPermaLink="true">{url}</guid>
+      <pubDate>{pub}</pubDate>
+      <author>bimaip@yandex.ru ({SITE})</author>
+      <description>{esc(a['description'])}</description>
+      <enclosure url="{DOMAIN}/assets/og-cover.png" type="image/png" length="0"/>
+      <content:encoded><![CDATA[{body}]]></content:encoded>
+    </item>""")
+
+    now = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0500")
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{SITE}</title>
+    <link>{DOMAIN}/</link>
+    <atom:link href="{DOMAIN}/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>ИИ в рабочих процессах компании: агенты, RAG по базе знаний, голосовые роботы, автоматизация на n8n.</description>
+    <language>ru</language>
+    <lastBuildDate>{now}</lastBuildDate>
+{chr(10).join(items)}
+  </channel>
+</rss>
+"""
+    (ROOT / "rss.xml").write_text(xml, encoding="utf-8")
+
+
 def main() -> None:
     show_all = "--all" in sys.argv
     today = date.today().isoformat()
@@ -418,6 +463,7 @@ def main() -> None:
     write_lists(live)
     write_index_page(live)
     update_index_html(live)
+    write_rss(live)
     update_sitemap(live, services, site_pages)
     (ROOT / "tools" / "indexnow-new.txt").write_text("\n".join(fresh), encoding="utf-8")
 
