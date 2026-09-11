@@ -42,6 +42,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 const LEAD_ENDPOINT = 'https://formsubmit.co/ajax/bimaip@yandex.ru';
 
 document.querySelectorAll('[data-audit-form]').forEach((form) => {
+  form.dataset.openedAt = String(Date.now());
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(form);
@@ -52,7 +53,18 @@ document.querySelectorAll('[data-audit-form]').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
 
     let delivered = false;
+    // Сначала наш сервис заявок (база + Telegram + почта), FormSubmit — запасной канал.
     try {
+      const r1 = await fetch('https://bim-pulse.ru/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'audit', name, contact, message: task,
+                               _honey: (data.get('_honey') || '').toString(),
+                               opened_at: form.dataset.openedAt ? Number(form.dataset.openedAt) : null }),
+      });
+      delivered = r1.ok && (await r1.json()).ok === true;
+    } catch (e0) { delivered = false; }
+    if (!delivered) try {
       const res = await fetch(LEAD_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
