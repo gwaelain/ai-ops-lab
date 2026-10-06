@@ -1,0 +1,400 @@
+<meta name="robots" content="noindex, nofollow">
+<title>Карта портфеля</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --ground:#F5F4EF; --surface:#FFFFFF; --surface-2:#FBFAF6;
+    --ink:#1A1D22; --muted:#666C74; --faint:#9CA1A8;
+    --accent:#177A56; --accent-soft:#E4F0EA; --accent-ink:#0E4E37;
+    --border:#E7E4DB; --border-strong:#D8D4C8;
+    --good:#1E8F60; --good-soft:#E2F1E9;
+    --warn:#B67A16; --warn-soft:#F6ECD6;
+    --quiet:#7E848C; --quiet-soft:#ECEAE3;
+    --shadow:0 1px 2px rgba(30,33,38,.04),0 4px 16px rgba(30,33,38,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#111318; --surface:#191C22; --surface-2:#15181D;
+      --ink:#E9EAED; --muted:#9AA0A8; --faint:#6C727A;
+      --accent:#43B587; --accent-soft:#16281F; --accent-ink:#8FE0BE;
+      --border:#282C34; --border-strong:#343943;
+      --good:#43B587; --good-soft:#132420;
+      --warn:#D8A54A; --warn-soft:#2A2314;
+      --quiet:#8A9098; --quiet-soft:#22262C;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#111318; --surface:#191C22; --surface-2:#15181D;
+    --ink:#E9EAED; --muted:#9AA0A8; --faint:#6C727A;
+    --accent:#43B587; --accent-soft:#16281F; --accent-ink:#8FE0BE;
+    --border:#282C34; --border-strong:#343943;
+    --good:#43B587; --good-soft:#132420;
+    --warn:#D8A54A; --warn-soft:#2A2314;
+    --quiet:#8A9098; --quiet-soft:#22262C;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);
+    font-family:"Inter",-apple-system,system-ui,sans-serif;line-height:1.5;
+    -webkit-font-smoothing:antialiased;font-size:15px}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 64px}
+  h1,h2,h3{font-family:"Onest","Inter",sans-serif;margin:0;text-wrap:balance}
+  .mono{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+
+  /* header */
+  header{margin-bottom:20px}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-size:clamp(28px,7vw,40px);font-weight:800;letter-spacing:-.02em;margin:6px 0 8px}
+  .lede{color:var(--muted);font-size:15px;max-width:60ch}
+  .principle{margin-top:16px;background:var(--accent-soft);border:1px solid var(--border);
+    border-radius:14px;padding:14px 16px;font-size:14px}
+  .principle b{color:var(--accent-ink)}
+
+  /* traffic strip */
+  .strip{margin:22px 0 8px}
+  .strip h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+    font-weight:600;margin-bottom:10px}
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .tcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    padding:11px 12px;box-shadow:var(--shadow)}
+  .tcard .tn{font-family:"Onest";font-weight:600;font-size:13.5px;display:flex;
+    justify-content:space-between;align-items:baseline;gap:6px}
+  .tcard .big{font-size:19px;font-weight:600}
+  .tcard .sub{font-size:11px;color:var(--faint);margin-top:2px}
+  .bar{height:4px;border-radius:3px;background:var(--quiet-soft);margin-top:8px;overflow:hidden}
+  .bar>i{display:block;height:100%;background:var(--accent);border-radius:3px}
+
+  /* sections */
+  section{margin-top:32px}
+  .shead{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .shead h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .shead .flag{font-size:18px}
+  .count{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint)}
+  .sdesc{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+
+  .cards{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:620px){.cards{grid-template-columns:1fr 1fr}}
+  @media(min-width:900px){.cards.tri{grid-template-columns:1fr 1fr 1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:15px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px}
+  .card.flag{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow)}
+  .ctop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .ctop h3{font-size:16.5px;font-weight:700;letter-spacing:-.01em}
+  .dom{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--accent);word-break:break-all}
+  .dom a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px}
+  .dom a:hover{background:var(--accent-soft)}
+  .desc a{color:var(--accent-ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--border-strong)}
+  .desc a:hover{border-bottom-color:var(--accent)}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+  .desc{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:1px}
+  .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+  .p-live{background:var(--good-soft);color:var(--good)}
+  .p-ready{background:var(--warn-soft);color:var(--warn)}
+  .p-paused{background:var(--quiet-soft);color:var(--quiet)}
+  .p-concept{background:var(--quiet-soft);color:var(--quiet)}
+  .p-app{background:var(--accent-soft);color:var(--accent-ink)}
+  .p-traf{background:transparent;border:1px solid var(--border-strong);color:var(--ink);
+    font-family:"JetBrains Mono",monospace;font-weight:500}
+  .push{border-top:1px dashed var(--border);padding-top:9px;font-size:12.5px;color:var(--ink)}
+  .push b{color:var(--accent-ink);font-weight:600}
+  .cost{margin-top:8px;border-top:1px dashed var(--border);padding-top:8px;text-align:right;
+    font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--faint)}
+  .cost b{color:var(--accent);font-weight:600}
+
+  /* b2b table */
+  .b2b{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    overflow:hidden;box-shadow:var(--shadow)}
+  .b2b .row{display:grid;grid-template-columns:1fr;gap:2px;padding:13px 15px;
+    border-top:1px solid var(--border)}
+  .b2b .row:first-child{border-top:none}
+  @media(min-width:560px){.b2b .row{grid-template-columns:190px 1fr;gap:14px;align-items:start}}
+  .b2b .bn{font-family:"Onest";font-weight:700;font-size:14.5px}
+  .b2b .bd{font-size:13px;color:var(--muted)}
+  .b2b .bm{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--accent-ink);
+    margin-top:4px;font-weight:500}
+  .b2b-note{font-size:13px;color:var(--muted);margin-top:12px;padding:0 2px}
+  .b2b-note b{color:var(--ink)}
+
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);
+    color:var(--faint);font-size:12px;font-family:"JetBrains Mono",monospace}
+  .theme-btn{position:fixed;top:12px;right:12px;background:var(--surface);border:1px solid var(--border);
+    color:var(--muted);border-radius:10px;width:38px;height:38px;font-size:16px;cursor:pointer;
+    box-shadow:var(--shadow);z-index:10}
+  .theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<button class="theme-btn" id="themeBtn" aria-label="Сменить тему">◐</button>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Портфель · 30.09.2026</div>
+    <h1>Карта портфеля</h1>
+    <p class="lede">Все проекты — от национальных до мелких — с описанием, трафиком, мини-апками и тем, чем толкнуть каждый снаружи. У каждого — сколько в него вложено: часы, токены и объём разобранных данных.</p>
+    <div class="principle" style="background:var(--surface-2)">⏱ <b>Всего вложено по журналам работы:</b> 402 ч чистого времени у экрана за 100 рабочих дней (по проектам — 575 ч, работа часто шла в несколько чатов сразу) · 38,3 млрд токенов · данные проектов — 17,8 млн ячеек, из них 7,3 млн числовых. Написано <b>448 674 строк своего кода</b> — разработчику на такой объём нужно ≈17 985 ч, это около 8,9 года работы. Часы считаются строго: пауза дольше 15 минут в зачёт не идёт. Методика — <code>infra\statistika\МЕТОДИКА.md</code>.</div>
+    <div class="principle">🔑 <b>Принцип разгона:</b> органика сама не придёт. Нужен толчок ИЗВНЕ — QR-коды, переходы, соцкапитал, рассылки. Внешняя популярность → алгоритмы Яндекса/Google подхватывают.</div>
+  </header>
+
+  <div class="strip">
+    <h2>Поиск — кто уже движется (кликов из поиска за всё время)</h2>
+    <div class="tgrid" id="strip"></div>
+  </div>
+
+  <div id="tiers"></div>
+
+  <section>
+    <div class="shead"><span class="flag">🏢</span><h2>B2B-системы для бизнеса</h2><span class="count" id="b2bcount"></span></div>
+    <p class="sdesc">Боевые системы, ускоряющие работу сотрудников реального бизнеса. Готовый каркас под продажу другим компаниям — это и есть суть AI-Штат.</p>
+    <div class="b2b" id="b2b"></div>
+    <p class="b2b-note"><b>Суть для продажи:</b> берём рутину сотрудника (заявки, предписания, звонки, показатели) → ИИ распознаёт и раскладывает → человек занимается делом, а не бумагами. Это доказанные активы — продаём как внедрение.</p>
+  </section>
+
+<section id="itogo">
+    <style>
+      #itogo .tgrid{grid-template-columns:repeat(auto-fill,minmax(178px,1fr))}
+      #itogo .tcard .tn{flex-direction:column;align-items:flex-start;gap:2px}
+      #itogo .tcard .tn>span:first-child{font-size:12px;color:var(--muted);font-weight:600;
+        text-transform:uppercase;letter-spacing:.04em}
+      #itogo .tcard .big{font-size:23px;line-height:1.15;white-space:nowrap}
+      #itogo .tcard .sub{margin-top:6px;line-height:1.35}
+    </style>
+    <div class="shead"><span class="flag">⏱</span><h2>Итого по портфелю</h2></div>
+    <p class="sdesc">Слева — что реально потрачено (по журналам работы), справа — во сколько тот же
+    объём кода обошёлся бы у разработчика при спокойной норме 25 строк в час.</p>
+    <div class="tgrid">
+      <div class="tcard"><div class="tn"><span>Наша работа</span><span class="big mono">402 ч</span></div>
+        <div class="sub">чистого времени у экрана за 100 рабочих дней
+        (с паузами до получаса — 500 ч)</div></div>
+      <div class="tcard"><div class="tn"><span>Переработано</span><span class="big mono">38,3 млрд</span></div>
+        <div class="sub">токенов текста через модель</div></div>
+      <div class="tcard"><div class="tn"><span>Разобрано</span><span class="big mono">17,8 млн</span></div>
+        <div class="sub">ячеек, из них 7,3 млн чисел</div></div>
+      <div class="tcard"><div class="tn"><span>Написано кода</span><span class="big mono">448 674</span></div>
+        <div class="sub">строк своего кода (без чужих форков)</div></div>
+      <div class="tcard"><div class="tn"><span>Разработчику</span><span class="big mono">17 985 ч</span></div>
+        <div class="sub">≈2248 рабочих дней ≈ 8,9 года</div></div>
+      <div class="tcard"><div class="tn"><span>Разница</span><span class="big mono">×31</span></div>
+        <div class="sub">во столько раз меньше времени ушло (сравниваем с часами по проектам)</div></div>
+      <div class="tcard"><div class="tn"><span>По проектам</span><span class="big mono">575 ч</span></div>
+        <div class="sub">то же время, но разложенное по проектам: работа часто шла в
+        1,4 чата одновременно (пик 9), и каждый проект считает свои часы</div></div>
+      <div class="tcard"><div class="tn"><span>Рабочих дней</span><span class="big mono">100</span></div>
+        <div class="sub">дней, в которые шла работа — в среднем по 4,0 ч</div></div>
+    </div>
+    <p class="b2b-note">Часы считаются строго: промежуток между сообщениями длиннее 15 минут —
+    перерыв и в зачёт не идёт. Оценка разработчика — по объёму кода, 25 строк в час с отладкой и
+    тестами. Методика целиком — <b>infra\statistika\МЕТОДИКА.md</b>.</p>
+  </section>
+
+<section id="poisk">
+    <style>
+      @media(min-width:560px){#poisk .b2b .row{grid-template-columns:230px 1fr}}
+      #poisk .b2b .bn .dom{font-size:11px;line-height:1.35}
+    </style>
+    <div class="shead"><span class="flag">🔍</span><h2>Пруфы по поиску</h2><span class="count">16 сайтов</span></div>
+    <p class="sdesc">Живые данные Яндекс.Вебмастера и Google Search Console за всю доступную историю
+    (2025-10-01 — 2026-09-30), клики — по всем запросам, а не только по популярным. Итого по портфелю:
+    <b>98 170 показов</b> и <b>1 822 кликов</b> из поиска,
+    <b>304 страниц</b> в индексе Яндекса.</p>
+    <div class="b2b">
+      <div class="row"><div class="bn">ПрофНавигатор<div class="dom">в сети 96 дн · поиск с 2026-07-24</div></div><div><div class="bd">страниц в индексе Яндекса: 144 · визитов за 14 дней: 573 · за последний месяц: 20 775 показов, 283 кликов</div><div class="bm">за всё время: показы 53 666 (Я 50 478 + G 3 188) · клики <b>1186</b> (Я 1108 + G 78)</div></div></div><div class="row"><div class="bn">lookfornotebook (ремонт техники)<div class="dom">в сети 1296 дн · поиск с 2026-07-23</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц: 12 463 показов, 105 кликов</div><div class="bm">за всё время: показы 36 637 (Я 12 253 + G 24 384) · клики <b>387</b> (Я 158 + G 229)</div></div></div><div class="row"><div class="bn">BIM Pulse<div class="dom">в сети 146 дн · поиск с 2026-05-07</div></div><div><div class="bd">страниц в индексе Яндекса: 59 · визитов за 14 дней: 86 · за последний месяц: 1 089 показов, 33 кликов</div><div class="bm">за всё время: показы 2 537 (Я 2 184 + G 353) · клики <b>80</b> (Я 76 + G 4)</div></div></div><div class="row"><div class="bn">likvidnostai (недвижимость)<div class="dom">в сети 50 дн · поиск с 2026-08-14</div></div><div><div class="bd">страниц в индексе Яндекса: 22 · визитов за 14 дней: 49 · за последний месяц: 964 показов, 55 кликов</div><div class="bm">за всё время: показы 1 135 (Я 1 117 + G 18) · клики <b>76</b> (Я 76 + G 0)</div></div></div><div class="row"><div class="bn">3dufa (старый домен туров)<div class="dom">в сети 4111 дн · поиск с 2025-10-02</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц: 35 показов, 1 кликов</div><div class="bm">за всё время: показы 548 (Я 548 + G 0) · клики <b>53</b> (Я 53 + G 0)</div></div></div><div class="row"><div class="bn">mrdom (ремонт квартир)<div class="dom">в сети 1722 дн · поиск с 2025-10-01</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц: 684 показов, 1 кликов</div><div class="bm">за всё время: показы 1 023 (Я 209 + G 814) · клики <b>10</b> (Я 6 + G 4)</div></div></div><div class="row"><div class="bn">Тур3Д<div class="dom">в сети 71 дн · поиск с 2026-07-26</div></div><div><div class="bd">страниц в индексе Яндекса: 14 · визитов за 14 дней: 48 · за последний месяц: 685 показов, 2 кликов</div><div class="bm">за всё время: показы 1 200 (Я 835 + G 365) · клики <b>8</b> (Я 4 + G 4)</div></div></div><div class="row"><div class="bn">Идеальное резюме<div class="dom">в сети 88 дн · поиск с 2026-08-05</div></div><div><div class="bd">страниц в индексе Яндекса: 25 · визитов за 14 дней: 11 · за последний месяц: 220 показов, 1 кликов</div><div class="bm">за всё время: показы 798 (Я 74 + G 724) · клики <b>6</b> (Я 2 + G 4)</div></div></div><div class="row"><div class="bn">HumanHack<div class="dom">в сети 106 дн · поиск с 2026-08-14</div></div><div><div class="bd">страниц в индексе Яндекса: 22 · визитов за 14 дней: 8 · за последний месяц: 70 показов, 4 кликов</div><div class="bm">за всё время: показы 104 (Я 76 + G 28) · клики <b>6</b> (Я 4 + G 2)</div></div></div><div class="row"><div class="bn">friendlyai<div class="dom">в сети 135 дн · поиск с 2026-05-18</div></div><div><div class="bd">страниц в индексе Яндекса: 7 · визитов за 14 дней: 11 · за последний месяц: 80 показов, 1 кликов</div><div class="bm">за всё время: показы 309 (Я 7 + G 302) · клики <b>5</b> (Я 0 + G 5)</div></div></div><div class="row"><div class="bn">Өфө.com (портал о Башкортостане)<div class="dom">в сети 413 дн · поиск с 2026-09-05</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц: 31 показов, 0 кликов</div><div class="bm">за всё время: показы 106 (Я 31 + G 75) · клики <b>4</b> (Я 1 + G 3)</div></div></div><div class="row"><div class="bn">stylai.ru<div class="dom">в сети 99 дн · поиск с 2026-08-05</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц данных нет</div><div class="bm">за всё время: показы 10 (Я 10 + G 0) · клики <b>1</b> (Я 1 + G 0)</div></div></div><div class="row"><div class="bn">Здравник<div class="dom">в сети 92 дн · поиск с 2026-07-28</div></div><div><div class="bd">страниц в индексе Яндекса: 11 · визитов за 14 дней: 7 · за последний месяц данных нет</div><div class="bm">за всё время: показы 57 (Я 31 + G 26) · клики <b>0</b> (Я 0 + G 0)</div></div></div><div class="row"><div class="bn">sadai.online<div class="dom">в сети 99 дн · поиск с 2026-07-24</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц данных нет</div><div class="bm">за всё время: показы 32 (Я 32 + G 0) · клики <b>0</b> (Я 0 + G 0)</div></div></div><div class="row"><div class="bn">milliardo (торги)<div class="dom">в сети 419 дн · поиск с 2026-09-24</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц данных нет</div><div class="bm">за всё время: показы 6 (Я 3 + G 3) · клики <b>0</b> (Я 0 + G 0)</div></div></div><div class="row"><div class="bn">vsepognali.online<div class="dom">в сети 93 дн · поиск с 2026-09-04</div></div><div><div class="bd">страниц в индексе Яндекса: — · за последний месяц данных нет</div><div class="bm">за всё время: показы 2 (Я 2 + G 0) · клики <b>0</b> (Я 0 + G 0)</div></div></div>
+    </div>
+    <p class="b2b-note">Показы — сколько раз сайт увидели в выдаче, клики — сколько раз по нему перешли. Итог за всё время считает <b>search-totals.py</b> (все запросы, а не только популярные), месяц — <b>ctr-audit.py</b>; методика сверена с <b>seo-checks\ЕДИНЫЕ-ЦИФРЫ-ПОИСКА</b>.<br>«В сети» — по дате регистрации домена, а поисковые данные идут с даты добавления сайта в наш Вебмастер (у старых доменов это июль 2026 и октябрь 2025 — поэтому возраст и период наблюдения не совпадают). У likvidnostai, HumanHack и Здравника визиты «из поиска» до 30.09 не считались: на статьях не стоял счётчик — нули там ложные. У BIM Pulse считаем по нашему счётчику 111661242, второй остался от прежнего владельца домена.</p>
+  </section>
+
+  <section id="grafik">
+    <style>
+      #grafik .chart{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+        padding:14px 12px 6px;box-shadow:var(--shadow);overflow-x:auto}
+      #grafik svg{display:block;min-width:760px;width:100%;height:auto}
+      #grafik .b{fill:var(--accent);opacity:.9}
+      #grafik .s{fill:var(--accent);opacity:.28}
+      #grafik .s.peak{fill:var(--warn);opacity:.35}
+      #grafik .lg{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12.5px;
+        margin:10px 2px 0}
+      #grafik .lg i{display:inline-block;width:11px;height:11px;border-radius:3px;
+        margin-right:6px;vertical-align:-1px}
+      #grafik .b:hover{opacity:1}
+      #grafik .b.peak{fill:var(--warn)}
+      #grafik .g{stroke:var(--border);stroke-width:1}
+      #grafik .ax{font:11px "JetBrains Mono",monospace;fill:var(--faint)}
+      #grafik .pk{font:600 12px "JetBrains Mono",monospace;fill:var(--warn)}
+      #grafik .tgrid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+      #grafik .tcard .tn{flex-direction:column;align-items:flex-start;gap:2px}
+      #grafik .tcard .tn>span:first-child{font-size:11.5px;color:var(--muted);font-weight:600;
+        text-transform:uppercase;letter-spacing:.04em}
+      #grafik .tcard .big{font-size:22px;line-height:1.15;white-space:nowrap}
+    </style>
+    <div class="shead"><span class="flag">📈</span><h2>402 часа с нейросетью</h2></div>
+    <p class="sdesc">Фактическое время за рабочими сессиями, посчитанное по журналам. Каждый столбик —
+    календарный день по местному времени; параллельные чаты не удваиваются. Тёмная часть — строгий счёт
+    (пауза дольше 15 минут не в счёт), светлая — с паузами до получаса: пока читаешь ответ и проверяешь
+    результат. Правда где-то между ними. В дни, когда параллельно работали фоновые агенты, светлая часть
+    прихватывает и их время — поэтому в дни-марафоны она может выходить за пределы обычного дня.</p>
+    <div class="tgrid" style="margin-bottom:12px">
+      <div class="tcard"><div class="tn"><span>Всего</span><span class="big mono">402–500 ч</span></div>
+        <div class="sub">строгий и мягкий счёт за 113 дней</div></div>
+      <div class="tcard"><div class="tn"><span>Дней за работой</span><span class="big mono">100 из 113</span></div>
+        <div class="sub">в остальные дни к чату не подходил</div></div>
+      <div class="tcard"><div class="tn"><span>В среднем</span><span class="big mono">4,0 ч</span></div>
+        <div class="sub">в рабочий день</div></div>
+      <div class="tcard"><div class="tn"><span>Рекорд</span><span class="big mono">10,5–20,3 ч</span></div>
+        <div class="sub">12 авг — день-марафон</div></div>
+    </div>
+    <div class="lg">
+      <span><i style="background:var(--accent);opacity:.9"></i>чистая работа (паузы до 15 мин)</span>
+      <span><i style="background:var(--accent);opacity:.3"></i>с паузами до 30 мин</span>
+      <span><i style="background:var(--warn)"></i>день-марафон</span>
+    </div>
+    <div class="chart">
+      <svg viewBox="0 0 1120 300" role="img" aria-label="Часы работы по дням">
+        <line class="g" x1="46" y1="258.0" x2="1106" y2="258.0"/><text class="ax" x="38" y="262.0" text-anchor="end">0 ч</text><line class="g" x1="46" y1="200.0" x2="1106" y2="200.0"/><text class="ax" x="38" y="204.0" text-anchor="end">6 ч</text><line class="g" x1="46" y1="142.0" x2="1106" y2="142.0"/><text class="ax" x="38" y="146.0" text-anchor="end">11 ч</text><line class="g" x1="46" y1="84.0" x2="1106" y2="84.0"/><text class="ax" x="38" y="88.0" text-anchor="end">16 ч</text><line class="g" x1="46" y1="26.0" x2="1106" y2="26.0"/><text class="ax" x="38" y="30.0" text-anchor="end">22 ч</text>
+        <rect class="b" x="47.3" y="258.0" width="6.8" height="0.0" rx="2"><title>2026-06-16 — 0,0 ч чистой работы</title></rect><rect class="b" x="56.7" y="253.4" width="6.8" height="4.6" rx="2"><title>2026-06-17 — 0,4 ч чистой работы</title></rect><rect class="b" x="159.9" y="243.1" width="6.8" height="14.9" rx="2"><title>2026-06-28 — 1,4 ч чистой работы</title></rect><rect class="s" x="169.3" y="218.6" width="6.8" height="39.4" rx="2"><title>2026-06-29 — 3,7 ч с паузами до 30 мин</title></rect><rect class="b" x="169.3" y="226.4" width="6.8" height="31.6" rx="2"><title>2026-06-29 — 3,0 ч чистой работы</title></rect><rect class="s" x="178.6" y="227.4" width="6.8" height="30.6" rx="2"><title>2026-06-30 — 2,9 ч с паузами до 30 мин</title></rect><rect class="b" x="178.6" y="237.0" width="6.8" height="21.0" rx="2"><title>2026-06-30 — 2,0 ч чистой работы</title></rect><rect class="s" x="188.0" y="203.5" width="6.8" height="54.5" rx="2"><title>2026-07-01 — 5,2 ч с паузами до 30 мин</title></rect><rect class="b" x="188.0" y="218.6" width="6.8" height="39.4" rx="2"><title>2026-07-01 — 3,7 ч чистой работы</title></rect><rect class="b" x="197.4" y="220.0" width="6.8" height="38.0" rx="2"><title>2026-07-02 — 3,6 ч чистой работы</title></rect><rect class="s" x="206.8" y="167.6" width="6.8" height="90.4" rx="2"><title>2026-07-03 — 8,6 ч с паузами до 30 мин</title></rect><rect class="b" x="206.8" y="208.6" width="6.8" height="49.4" rx="2"><title>2026-07-03 — 4,7 ч чистой работы</title></rect><rect class="b" x="216.2" y="184.1" width="6.8" height="73.9" rx="2"><title>2026-07-04 — 7,0 ч чистой работы</title></rect><rect class="s" x="225.5" y="198.0" width="6.8" height="60.0" rx="2"><title>2026-07-05 — 5,7 ч с паузами до 30 мин</title></rect><rect class="b" x="225.5" y="209.0" width="6.8" height="49.0" rx="2"><title>2026-07-05 — 4,7 ч чистой работы</title></rect><rect class="s" x="234.9" y="180.8" width="6.8" height="77.2" rx="2"><title>2026-07-06 — 7,3 ч с паузами до 30 мин</title></rect><rect class="b" x="234.9" y="193.1" width="6.8" height="64.9" rx="2"><title>2026-07-06 — 6,2 ч чистой работы</title></rect><rect class="b" x="244.3" y="174.9" width="6.8" height="83.1" rx="2"><title>2026-07-07 — 7,9 ч чистой работы</title></rect><rect class="s" x="253.7" y="213.7" width="6.8" height="44.3" rx="2"><title>2026-07-08 — 4,2 ч с паузами до 30 мин</title></rect><rect class="b" x="253.7" y="222.1" width="6.8" height="35.9" rx="2"><title>2026-07-08 — 3,4 ч чистой работы</title></rect><rect class="s" x="263.1" y="159.0" width="6.8" height="99.0" rx="2"><title>2026-07-09 — 9,4 ч с паузами до 30 мин</title></rect><rect class="b" x="263.1" y="169.2" width="6.8" height="88.8" rx="2"><title>2026-07-09 — 8,4 ч чистой работы</title></rect><rect class="s" x="272.4" y="200.7" width="6.8" height="57.3" rx="2"><title>2026-07-10 — 5,4 ч с паузами до 30 мин</title></rect><rect class="b" x="272.4" y="236.8" width="6.8" height="21.2" rx="2"><title>2026-07-10 — 2,0 ч чистой работы</title></rect><rect class="b" x="281.8" y="231.1" width="6.8" height="26.9" rx="2"><title>2026-07-11 — 2,5 ч чистой работы</title></rect><rect class="b" x="291.2" y="234.7" width="6.8" height="23.3" rx="2"><title>2026-07-12 — 2,2 ч чистой работы</title></rect><rect class="s" x="300.6" y="169.7" width="6.8" height="88.3" rx="2"><title>2026-07-13 — 8,4 ч с паузами до 30 мин</title></rect><rect class="b" x="300.6" y="182.3" width="6.8" height="75.7" rx="2"><title>2026-07-13 — 7,2 ч чистой работы</title></rect><rect class="s" x="310.0" y="137.4" width="6.8" height="120.6" rx="2"><title>2026-07-14 — 11,4 ч с паузами до 30 мин</title></rect><rect class="b" x="310.0" y="161.6" width="6.8" height="96.4" rx="2"><title>2026-07-14 — 9,1 ч чистой работы</title></rect><rect class="s" x="319.3" y="202.8" width="6.8" height="55.2" rx="2"><title>2026-07-15 — 5,2 ч с паузами до 30 мин</title></rect><rect class="b" x="319.3" y="218.7" width="6.8" height="39.3" rx="2"><title>2026-07-15 — 3,7 ч чистой работы</title></rect><rect class="s" x="328.7" y="211.1" width="6.8" height="46.9" rx="2"><title>2026-07-16 — 4,5 ч с паузами до 30 мин</title></rect><rect class="b" x="328.7" y="218.3" width="6.8" height="39.7" rx="2"><title>2026-07-16 — 3,8 ч чистой работы</title></rect><rect class="b" x="338.1" y="229.9" width="6.8" height="28.1" rx="2"><title>2026-07-17 — 2,7 ч чистой работы</title></rect><rect class="s" x="347.5" y="202.6" width="6.8" height="55.4" rx="2"><title>2026-07-18 — 5,2 ч с паузами до 30 мин</title></rect><rect class="b" x="347.5" y="212.2" width="6.8" height="45.8" rx="2"><title>2026-07-18 — 4,3 ч чистой работы</title></rect><rect class="b" x="356.9" y="198.3" width="6.8" height="59.7" rx="2"><title>2026-07-19 — 5,7 ч чистой работы</title></rect><rect class="s" x="366.3" y="238.8" width="6.8" height="19.2" rx="2"><title>2026-07-20 — 1,8 ч с паузами до 30 мин</title></rect><rect class="b" x="366.3" y="241.0" width="6.8" height="17.0" rx="2"><title>2026-07-20 — 1,6 ч чистой работы</title></rect><rect class="s" x="375.6" y="217.0" width="6.8" height="41.0" rx="2"><title>2026-07-21 — 3,9 ч с паузами до 30 мин</title></rect><rect class="b" x="375.6" y="233.9" width="6.8" height="24.1" rx="2"><title>2026-07-21 — 2,3 ч чистой работы</title></rect><rect class="s" x="385.0" y="224.9" width="6.8" height="33.1" rx="2"><title>2026-07-22 — 3,1 ч с паузами до 30 мин</title></rect><rect class="b" x="385.0" y="228.6" width="6.8" height="29.4" rx="2"><title>2026-07-22 — 2,8 ч чистой работы</title></rect><rect class="s" x="394.4" y="188.9" width="6.8" height="69.1" rx="2"><title>2026-07-23 — 6,5 ч с паузами до 30 мин</title></rect><rect class="b" x="394.4" y="191.2" width="6.8" height="66.8" rx="2"><title>2026-07-23 — 6,3 ч чистой работы</title></rect><rect class="s" x="403.8" y="219.1" width="6.8" height="38.9" rx="2"><title>2026-07-24 — 3,7 ч с паузами до 30 мин</title></rect><rect class="b" x="403.8" y="224.3" width="6.8" height="33.7" rx="2"><title>2026-07-24 — 3,2 ч чистой работы</title></rect><rect class="s" x="413.2" y="211.5" width="6.8" height="46.5" rx="2"><title>2026-07-25 — 4,4 ч с паузами до 30 мин</title></rect><rect class="b" x="413.2" y="222.9" width="6.8" height="35.1" rx="2"><title>2026-07-25 — 3,3 ч чистой работы</title></rect><rect class="s" x="422.5" y="239.4" width="6.8" height="18.6" rx="2"><title>2026-07-26 — 1,8 ч с паузами до 30 мин</title></rect><rect class="b" x="422.5" y="242.3" width="6.8" height="15.7" rx="2"><title>2026-07-26 — 1,5 ч чистой работы</title></rect><rect class="s" x="431.9" y="205.8" width="6.8" height="52.2" rx="2"><title>2026-07-27 — 5,0 ч с паузами до 30 мин</title></rect><rect class="b" x="431.9" y="219.3" width="6.8" height="38.7" rx="2"><title>2026-07-27 — 3,7 ч чистой работы</title></rect><rect class="b" x="441.3" y="258.0" width="6.8" height="0.0" rx="2"><title>2026-07-28 — 0,0 ч чистой работы</title></rect><rect class="s" x="450.7" y="223.9" width="6.8" height="34.1" rx="2"><title>2026-07-29 — 3,2 ч с паузами до 30 мин</title></rect><rect class="b" x="450.7" y="233.9" width="6.8" height="24.1" rx="2"><title>2026-07-29 — 2,3 ч чистой работы</title></rect><rect class="s" x="460.1" y="239.8" width="6.8" height="18.2" rx="2"><title>2026-07-30 — 1,7 ч с паузами до 30 мин</title></rect><rect class="b" x="460.1" y="242.1" width="6.8" height="15.9" rx="2"><title>2026-07-30 — 1,5 ч чистой работы</title></rect><rect class="b" x="469.4" y="256.5" width="6.8" height="1.5" rx="2"><title>2026-07-31 — 0,1 ч чистой работы</title></rect><rect class="b" x="478.8" y="249.5" width="6.8" height="8.5" rx="2"><title>2026-08-01 — 0,8 ч чистой работы</title></rect><rect class="b" x="488.2" y="246.8" width="6.8" height="11.2" rx="2"><title>2026-08-02 — 1,1 ч чистой работы</title></rect><rect class="b" x="497.6" y="227.0" width="6.8" height="31.0" rx="2"><title>2026-08-03 — 2,9 ч чистой работы</title></rect><rect class="s" x="507.0" y="221.3" width="6.8" height="36.7" rx="2"><title>2026-08-04 — 3,5 ч с паузами до 30 мин</title></rect><rect class="b" x="507.0" y="221.4" width="6.8" height="36.6" rx="2"><title>2026-08-04 — 3,5 ч чистой работы</title></rect><rect class="s" x="516.3" y="237.3" width="6.8" height="20.7" rx="2"><title>2026-08-05 — 2,0 ч с паузами до 30 мин</title></rect><rect class="b" x="516.3" y="240.7" width="6.8" height="17.3" rx="2"><title>2026-08-05 — 1,6 ч чистой работы</title></rect><rect class="s" x="525.7" y="167.6" width="6.8" height="90.4" rx="2"><title>2026-08-06 — 8,6 ч с паузами до 30 мин</title></rect><rect class="b" x="525.7" y="187.9" width="6.8" height="70.1" rx="2"><title>2026-08-06 — 6,7 ч чистой работы</title></rect><rect class="s" x="535.1" y="225.6" width="6.8" height="32.4" rx="2"><title>2026-08-07 — 3,1 ч с паузами до 30 мин</title></rect><rect class="b" x="535.1" y="229.8" width="6.8" height="28.2" rx="2"><title>2026-08-07 — 2,7 ч чистой работы</title></rect><rect class="b" x="544.5" y="250.5" width="6.8" height="7.5" rx="2"><title>2026-08-08 — 0,7 ч чистой работы</title></rect><rect class="s" x="563.2" y="231.7" width="6.8" height="26.3" rx="2"><title>2026-08-10 — 2,5 ч с паузами до 30 мин</title></rect><rect class="b" x="563.2" y="234.6" width="6.8" height="23.4" rx="2"><title>2026-08-10 — 2,2 ч чистой работы</title></rect><rect class="s" x="572.6" y="75.6" width="6.8" height="182.4" rx="2"><title>2026-08-11 — 17,3 ч с паузами до 30 мин</title></rect><rect class="b" x="572.6" y="160.3" width="6.8" height="97.7" rx="2"><title>2026-08-11 — 9,3 ч чистой работы</title></rect><rect class="s peak" x="582.0" y="44.2" width="6.8" height="213.8" rx="2"><title>2026-08-12 — 20,3 ч с паузами до 30 мин</title></rect><rect class="b peak" x="582.0" y="147.6" width="6.8" height="110.4" rx="2"><title>2026-08-12 — 10,5 ч чистой работы</title></rect><rect class="s" x="591.4" y="181.3" width="6.8" height="76.7" rx="2"><title>2026-08-13 — 7,3 ч с паузами до 30 мин</title></rect><rect class="b" x="591.4" y="187.5" width="6.8" height="70.5" rx="2"><title>2026-08-13 — 6,7 ч чистой работы</title></rect><rect class="s" x="600.8" y="190.2" width="6.8" height="67.8" rx="2"><title>2026-08-14 — 6,4 ч с паузами до 30 мин</title></rect><rect class="b" x="600.8" y="197.5" width="6.8" height="60.5" rx="2"><title>2026-08-14 — 5,7 ч чистой работы</title></rect><rect class="s" x="610.1" y="218.1" width="6.8" height="39.9" rx="2"><title>2026-08-15 — 3,8 ч с паузами до 30 мин</title></rect><rect class="b" x="610.1" y="225.9" width="6.8" height="32.1" rx="2"><title>2026-08-15 — 3,0 ч чистой работы</title></rect><rect class="s" x="619.5" y="209.2" width="6.8" height="48.8" rx="2"><title>2026-08-16 — 4,6 ч с паузами до 30 мин</title></rect><rect class="b" x="619.5" y="211.2" width="6.8" height="46.8" rx="2"><title>2026-08-16 — 4,4 ч чистой работы</title></rect><rect class="s" x="628.9" y="213.2" width="6.8" height="44.8" rx="2"><title>2026-08-17 — 4,2 ч с паузами до 30 мин</title></rect><rect class="b" x="628.9" y="219.1" width="6.8" height="38.9" rx="2"><title>2026-08-17 — 3,7 ч чистой работы</title></rect><rect class="s" x="638.3" y="231.2" width="6.8" height="26.8" rx="2"><title>2026-08-18 — 2,5 ч с паузами до 30 мин</title></rect><rect class="b" x="638.3" y="243.0" width="6.8" height="15.0" rx="2"><title>2026-08-18 — 1,4 ч чистой работы</title></rect><rect class="s" x="647.7" y="194.6" width="6.8" height="63.4" rx="2"><title>2026-08-19 — 6,0 ч с паузами до 30 мин</title></rect><rect class="b" x="647.7" y="206.7" width="6.8" height="51.3" rx="2"><title>2026-08-19 — 4,9 ч чистой работы</title></rect><rect class="s" x="657.0" y="185.2" width="6.8" height="72.8" rx="2"><title>2026-08-20 — 6,9 ч с паузами до 30 мин</title></rect><rect class="b" x="657.0" y="196.7" width="6.8" height="61.3" rx="2"><title>2026-08-20 — 5,8 ч чистой работы</title></rect><rect class="b" x="666.4" y="254.3" width="6.8" height="3.7" rx="2"><title>2026-08-21 — 0,3 ч чистой работы</title></rect><rect class="s" x="694.6" y="212.7" width="6.8" height="45.3" rx="2"><title>2026-08-24 — 4,3 ч с паузами до 30 мин</title></rect><rect class="b" x="694.6" y="224.6" width="6.8" height="33.4" rx="2"><title>2026-08-24 — 3,2 ч чистой работы</title></rect><rect class="s" x="704.0" y="153.2" width="6.8" height="104.8" rx="2"><title>2026-08-25 — 9,9 ч с паузами до 30 мин</title></rect><rect class="b" x="704.0" y="191.2" width="6.8" height="66.8" rx="2"><title>2026-08-25 — 6,3 ч чистой работы</title></rect><rect class="b" x="713.3" y="173.2" width="6.8" height="84.8" rx="2"><title>2026-08-26 — 8,0 ч чистой работы</title></rect><rect class="s" x="722.7" y="235.7" width="6.8" height="22.3" rx="2"><title>2026-08-27 — 2,1 ч с паузами до 30 мин</title></rect><rect class="b" x="722.7" y="240.8" width="6.8" height="17.2" rx="2"><title>2026-08-27 — 1,6 ч чистой работы</title></rect><rect class="s" x="732.1" y="203.7" width="6.8" height="54.3" rx="2"><title>2026-08-28 — 5,2 ч с паузами до 30 мин</title></rect><rect class="b" x="732.1" y="234.0" width="6.8" height="24.0" rx="2"><title>2026-08-28 — 2,3 ч чистой работы</title></rect><rect class="b" x="741.5" y="238.5" width="6.8" height="19.5" rx="2"><title>2026-08-29 — 1,9 ч чистой работы</title></rect><rect class="s" x="750.9" y="250.4" width="6.8" height="7.6" rx="2"><title>2026-08-30 — 0,7 ч с паузами до 30 мин</title></rect><rect class="b" x="750.9" y="254.8" width="6.8" height="3.2" rx="2"><title>2026-08-30 — 0,3 ч чистой работы</title></rect><rect class="s" x="760.2" y="198.4" width="6.8" height="59.6" rx="2"><title>2026-08-31 — 5,7 ч с паузами до 30 мин</title></rect><rect class="b" x="760.2" y="218.1" width="6.8" height="39.9" rx="2"><title>2026-08-31 — 3,8 ч чистой работы</title></rect><rect class="s" x="769.6" y="202.4" width="6.8" height="55.6" rx="2"><title>2026-09-01 — 5,3 ч с паузами до 30 мин</title></rect><rect class="b" x="769.6" y="202.5" width="6.8" height="55.5" rx="2"><title>2026-09-01 — 5,3 ч чистой работы</title></rect><rect class="s" x="779.0" y="193.5" width="6.8" height="64.5" rx="2"><title>2026-09-02 — 6,1 ч с паузами до 30 мин</title></rect><rect class="b" x="779.0" y="205.0" width="6.8" height="53.0" rx="2"><title>2026-09-02 — 5,0 ч чистой работы</title></rect><rect class="s" x="788.4" y="166.6" width="6.8" height="91.4" rx="2"><title>2026-09-03 — 8,7 ч с паузами до 30 мин</title></rect><rect class="b" x="788.4" y="182.7" width="6.8" height="75.3" rx="2"><title>2026-09-03 — 7,1 ч чистой работы</title></rect><rect class="s" x="797.8" y="159.7" width="6.8" height="98.3" rx="2"><title>2026-09-04 — 9,3 ч с паузами до 30 мин</title></rect><rect class="b" x="797.8" y="179.4" width="6.8" height="78.6" rx="2"><title>2026-09-04 — 7,5 ч чистой работы</title></rect><rect class="b" x="807.1" y="234.7" width="6.8" height="23.3" rx="2"><title>2026-09-05 — 2,2 ч чистой работы</title></rect><rect class="b" x="816.5" y="222.3" width="6.8" height="35.7" rx="2"><title>2026-09-06 — 3,4 ч чистой работы</title></rect><rect class="s" x="825.9" y="175.6" width="6.8" height="82.4" rx="2"><title>2026-09-07 — 7,8 ч с паузами до 30 мин</title></rect><rect class="b" x="825.9" y="188.2" width="6.8" height="69.8" rx="2"><title>2026-09-07 — 6,6 ч чистой работы</title></rect><rect class="b" x="835.3" y="230.6" width="6.8" height="27.4" rx="2"><title>2026-09-08 — 2,6 ч чистой работы</title></rect><rect class="s" x="844.7" y="187.3" width="6.8" height="70.7" rx="2"><title>2026-09-09 — 6,7 ч с паузами до 30 мин</title></rect><rect class="b" x="844.7" y="200.0" width="6.8" height="58.0" rx="2"><title>2026-09-09 — 5,5 ч чистой работы</title></rect><rect class="s" x="854.0" y="194.0" width="6.8" height="64.0" rx="2"><title>2026-09-10 — 6,1 ч с паузами до 30 мин</title></rect><rect class="b" x="854.0" y="213.7" width="6.8" height="44.3" rx="2"><title>2026-09-10 — 4,2 ч чистой работы</title></rect><rect class="s" x="863.4" y="207.1" width="6.8" height="50.9" rx="2"><title>2026-09-11 — 4,8 ч с паузами до 30 мин</title></rect><rect class="b" x="863.4" y="211.7" width="6.8" height="46.3" rx="2"><title>2026-09-11 — 4,4 ч чистой работы</title></rect><rect class="s" x="872.8" y="243.3" width="6.8" height="14.7" rx="2"><title>2026-09-12 — 1,4 ч с паузами до 30 мин</title></rect><rect class="b" x="872.8" y="243.6" width="6.8" height="14.4" rx="2"><title>2026-09-12 — 1,4 ч чистой работы</title></rect><rect class="s" x="882.2" y="217.1" width="6.8" height="40.9" rx="2"><title>2026-09-13 — 3,9 ч с паузами до 30 мин</title></rect><rect class="b" x="882.2" y="224.6" width="6.8" height="33.4" rx="2"><title>2026-09-13 — 3,2 ч чистой работы</title></rect><rect class="s" x="891.6" y="205.6" width="6.8" height="52.4" rx="2"><title>2026-09-14 — 5,0 ч с паузами до 30 мин</title></rect><rect class="b" x="891.6" y="209.9" width="6.8" height="48.1" rx="2"><title>2026-09-14 — 4,6 ч чистой работы</title></rect><rect class="s" x="900.9" y="190.2" width="6.8" height="67.8" rx="2"><title>2026-09-15 — 6,4 ч с паузами до 30 мин</title></rect><rect class="b" x="900.9" y="194.2" width="6.8" height="63.8" rx="2"><title>2026-09-15 — 6,0 ч чистой работы</title></rect><rect class="s" x="910.3" y="134.4" width="6.8" height="123.6" rx="2"><title>2026-09-16 — 11,7 ч с паузами до 30 мин</title></rect><rect class="b" x="910.3" y="165.2" width="6.8" height="92.8" rx="2"><title>2026-09-16 — 8,8 ч чистой работы</title></rect><rect class="s" x="919.7" y="229.9" width="6.8" height="28.1" rx="2"><title>2026-09-17 — 2,7 ч с паузами до 30 мин</title></rect><rect class="b" x="919.7" y="233.6" width="6.8" height="24.4" rx="2"><title>2026-09-17 — 2,3 ч чистой работы</title></rect><rect class="b" x="929.1" y="248.7" width="6.8" height="9.3" rx="2"><title>2026-09-18 — 0,9 ч чистой работы</title></rect><rect class="b" x="938.5" y="210.7" width="6.8" height="47.3" rx="2"><title>2026-09-19 — 4,5 ч чистой работы</title></rect><rect class="s" x="947.8" y="174.8" width="6.8" height="83.2" rx="2"><title>2026-09-20 — 7,9 ч с паузами до 30 мин</title></rect><rect class="b" x="947.8" y="189.9" width="6.8" height="68.1" rx="2"><title>2026-09-20 — 6,5 ч чистой работы</title></rect><rect class="s" x="957.2" y="100.3" width="6.8" height="157.7" rx="2"><title>2026-09-21 — 14,9 ч с паузами до 30 мин</title></rect><rect class="b" x="957.2" y="182.5" width="6.8" height="75.5" rx="2"><title>2026-09-21 — 7,2 ч чистой работы</title></rect><rect class="b" x="966.6" y="117.4" width="6.8" height="140.6" rx="2"><title>2026-09-22 — 13,3 ч чистой работы</title></rect><rect class="s" x="976.0" y="180.9" width="6.8" height="77.1" rx="2"><title>2026-09-23 — 7,3 ч с паузами до 30 мин</title></rect><rect class="b" x="976.0" y="201.8" width="6.8" height="56.2" rx="2"><title>2026-09-23 — 5,3 ч чистой работы</title></rect><rect class="s" x="985.4" y="225.7" width="6.8" height="32.3" rx="2"><title>2026-09-24 — 3,1 ч с паузами до 30 мин</title></rect><rect class="b" x="985.4" y="234.1" width="6.8" height="23.9" rx="2"><title>2026-09-24 — 2,3 ч чистой работы</title></rect><rect class="s" x="994.7" y="226.7" width="6.8" height="31.3" rx="2"><title>2026-09-25 — 3,0 ч с паузами до 30 мин</title></rect><rect class="b" x="994.7" y="236.4" width="6.8" height="21.6" rx="2"><title>2026-09-25 — 2,0 ч чистой работы</title></rect><rect class="s" x="1004.1" y="167.7" width="6.8" height="90.3" rx="2"><title>2026-09-26 — 8,6 ч с паузами до 30 мин</title></rect><rect class="b" x="1004.1" y="229.4" width="6.8" height="28.6" rx="2"><title>2026-09-26 — 2,7 ч чистой работы</title></rect><rect class="b" x="1013.5" y="209.9" width="6.8" height="48.1" rx="2"><title>2026-09-27 — 4,6 ч чистой работы</title></rect><rect class="s" x="1022.9" y="213.2" width="6.8" height="44.8" rx="2"><title>2026-09-28 — 4,2 ч с паузами до 30 мин</title></rect><rect class="b" x="1022.9" y="244.1" width="6.8" height="13.9" rx="2"><title>2026-09-28 — 1,3 ч чистой работы</title></rect><rect class="s" x="1032.3" y="179.6" width="6.8" height="78.4" rx="2"><title>2026-09-29 — 7,4 ч с паузами до 30 мин</title></rect><rect class="b" x="1032.3" y="180.5" width="6.8" height="77.5" rx="2"><title>2026-09-29 — 7,3 ч чистой работы</title></rect><rect class="s" x="1041.6" y="179.3" width="6.8" height="78.7" rx="2"><title>2026-09-30 — 7,5 ч с паузами до 30 мин</title></rect><rect class="b" x="1041.6" y="186.0" width="6.8" height="72.0" rx="2"><title>2026-09-30 — 6,8 ч чистой работы</title></rect><rect class="s" x="1051.0" y="168.6" width="6.8" height="89.4" rx="2"><title>2026-10-01 — 8,5 ч с паузами до 30 мин</title></rect><rect class="b" x="1051.0" y="204.5" width="6.8" height="53.5" rx="2"><title>2026-10-01 — 5,1 ч чистой работы</title></rect><rect class="b" x="1060.4" y="226.5" width="6.8" height="31.5" rx="2"><title>2026-10-02 — 3,0 ч чистой работы</title></rect><rect class="s" x="1069.8" y="212.7" width="6.8" height="45.3" rx="2"><title>2026-10-03 — 4,3 ч с паузами до 30 мин</title></rect><rect class="b" x="1069.8" y="221.5" width="6.8" height="36.5" rx="2"><title>2026-10-03 — 3,5 ч чистой работы</title></rect><rect class="s" x="1079.2" y="205.4" width="6.8" height="52.6" rx="2"><title>2026-10-04 — 5,0 ч с паузами до 30 мин</title></rect><rect class="b" x="1079.2" y="211.9" width="6.8" height="46.1" rx="2"><title>2026-10-04 — 4,4 ч чистой работы</title></rect><rect class="s" x="1088.6" y="161.9" width="6.8" height="96.1" rx="2"><title>2026-10-05 — 9,1 ч с паузами до 30 мин</title></rect><rect class="b" x="1088.6" y="195.0" width="6.8" height="63.0" rx="2"><title>2026-10-05 — 6,0 ч чистой работы</title></rect><rect class="s" x="1097.9" y="234.2" width="6.8" height="23.8" rx="2"><title>2026-10-06 — 2,3 ч с паузами до 30 мин</title></rect><rect class="b" x="1097.9" y="235.0" width="6.8" height="23.0" rx="2"><title>2026-10-06 — 2,2 ч чистой работы</title></rect>
+        <text class="pk" x="585.4" y="36.2" text-anchor="middle">10,5–20,3 ч</text>
+        <text class="ax" x="107.0" y="278" text-anchor="middle">22 июн</text><text class="ax" x="172.6" y="278" text-anchor="middle">29 июн</text><text class="ax" x="238.3" y="278" text-anchor="middle">6 июл</text><text class="ax" x="304.0" y="278" text-anchor="middle">13 июл</text><text class="ax" x="369.6" y="278" text-anchor="middle">20 июл</text><text class="ax" x="435.3" y="278" text-anchor="middle">27 июл</text><text class="ax" x="501.0" y="278" text-anchor="middle">3 авг</text><text class="ax" x="566.6" y="278" text-anchor="middle">10 авг</text><text class="ax" x="632.3" y="278" text-anchor="middle">17 авг</text><text class="ax" x="697.9" y="278" text-anchor="middle">24 авг</text><text class="ax" x="763.6" y="278" text-anchor="middle">31 авг</text><text class="ax" x="829.3" y="278" text-anchor="middle">7 сен</text><text class="ax" x="894.9" y="278" text-anchor="middle">14 сен</text><text class="ax" x="960.6" y="278" text-anchor="middle">21 сен</text><text class="ax" x="1026.3" y="278" text-anchor="middle">28 сен</text><text class="ax" x="1091.9" y="278" text-anchor="middle">5 окт</text>
+      </svg>
+    </div>
+  </section>
+
+  <footer>Карта портфеля · трафик из seo-daily · статусы и «что требуется» — в карточках Brain
+  (<code>Brain\Дашборд портфеля.html</code>) · часы и токены — из журналов работы<br>
+  Обновляется вместе с доской Brain одной кнопкой «Обновить дашборд.bat» · внутренний документ</footer>
+</div>
+
+<script>
+const traffic = [
+  {n:"ПрофНавигатор",v:1186,g:53666,d:96,lead:true},
+  {n:"lookfornotebook",v:387,g:36637,d:1296},
+  {n:"BIM Pulse",v:80,g:2537,d:146},
+  {n:"likvidnostai",v:76,g:1135,d:50},
+  {n:"3dufa",v:53,g:548,d:4111},
+  {n:"mrdom",v:10,g:1023,d:1722},
+  {n:"Тур3Д",v:8,g:1200,d:71},
+  {n:"Идеальное резюме",v:6,g:798,d:88},
+];
+const maxv = Math.max(...traffic.map(t=>t.v));
+document.getElementById("strip").innerHTML = traffic.map(t=>`
+  <div class="tcard">
+    <div class="tn"><span>${t.n}</span><span class="big mono">${t.v}</span></div>
+    <div class="sub">кликов из поиска · ${t.g.toLocaleString("ru")} показов${t.d?" · "+t.d+" дн в сети":""}${t.lead?" · лидер":""}</div>
+    <div class="bar"><i style="width:${Math.max(6,t.v/maxv*100)}%"></i></div>
+  </div>`).join("");
+
+const LIVE = new Set(["xn--t1a34ab.com","өфө.com","profnavigatorai.ru","tur-3d.ru","3dufa.ru","bim-pulse.ru","friendlyai.ru","zdravnikai.ru","podbor-ai.ru","likvidnostai.ru","humanhack.ru","usadbai.ru","stylai.ru","sadai.online","vsepognali.online","families.lemanapro.ru","lookfornotebook.ru","mrdom.ru"]);
+function linkDom(s){
+  return s.split("·").map(function(part){
+    var t=part.trim();
+    if(t.charAt(0)==="@") return ' <a href="https://t.me/'+t.slice(1)+'" target="_blank" rel="noopener">'+t+'</a> ';
+    if(LIVE.has(t)) return ' <a href="https://'+t+'" target="_blank" rel="noopener">'+t+'</a> ';
+    return ' '+part+' ';
+  }).join("·").trim();
+}
+function linkDesc(s){
+  return s.replace(/@([A-Za-z0-9_]{3,})/g,function(m,h){return '<a href="https://t.me/'+h+'" target="_blank" rel="noopener">@'+h+'</a>';});
+}
+
+const tiers = [
+  { flag:"🇷🇺", title:"Национальные / амбициозные", desc:"Широкий охват, культура, масштаб.", tri:false, items:[
+    {name:"ПрофНавигатор",dom:"profnavigatorai.ru",flag:true,desc:"Профориентация школьников: тесты + ИИ-наставник по профессиям, вузы, зарплаты. B2B-канал — школы.",status:"live",app:true,traf:"177 виз · 453 показа",push:"Разослать 35 школ Уфы (письмо готово) → семьи → соцкапитал. Ближе всех к взлёту.",cost:"⏱ <b>34 ч</b> · 2,9 млрд токенов · 145 документов · разработчику ≈54 дн"},
+    {name:"Мустай-ИИ",dom:"must-ai.ru",desc:"«Мустай Карим глазами ИИ» — культурный/национальный проект о башкирском поэте.",status:"ready",app:false,push:"Грант культуры, музеи, минкульт (монетизация не рекламная).",cost:"⏱ <b>2,1 ч</b> · 57 млн токенов · 14 документов · разработчику ≈12 дн"},
+    {name:"Өфө.com (Өф!)",dom:"өфө.com · офо.com",desc:"Портал о Башкортостане: «Вдохни — ты дома». 66 статей с реальными фото, разделы «Куда поехать» и «Самобытность», мерч «Өф!» и мёд — сопутствующее. Товарный знак «Өф!» готов к подаче (классы 9·25·26·30·35). ВК-сообщество забронировано — 3000 активных участников.",status:"live",app:false,traf:"106 показов · 4 клика",push:"Запуск на готовые 3000 в ВК + гранты культуры и музеи. Хвост: подтвердить домены в Google Search Console (TXT в reg.ru)."},
+    {name:"3ДТур",dom:"tur-3d.ru · 3dufa.ru",desc:"Виртуальные 3D-туры под ключ по всей РФ, от 790 ₽/точка. Реальная услуга с чеком.",status:"live",app:false,traf:"30 виз · 59 показов",push:"Рассылка по музеям (готова) + КП + Яндекс.Бизнес/2ГИС → первые заказы → кейсы.",cost:"⏱ <b>13 ч</b> · 1,1 млрд токенов · 42 документов · разработчику ≈32 дн"},
+    {name:"bim-pulse / BIMAI",dom:"bim-pulse.ru",desc:"BIM/AI/автоматизация проектирования: автопроверка моделей, Dynamo, API. B2B-витрина.",status:"live",app:false,traf:"20 виз · 46 стр",push:"Сообщества проектировщиков, Хабр/VC, каталоги.",cost:"⏱ <b>12 ч</b> · 1,3 млрд токенов · 87 документов · разработчику ≈80 дн"},
+    {name:"friendlyai",dom:"friendlyai.ru",desc:"«ИИ-агенты без разработчиков» + «ИИ и 1С» для стройкомпаний. B2B-витрина.",status:"live",app:false,traf:"13 виз · 33 показа",push:"Исходящие в бизнес, VC-статьи, кейсы.",cost:"⏱ журналы сессий не сохранились · <b>5 543 строк кода</b> · разработчику ≈28 дн"},
+    {name:"AI-Штат",dom:"ai-shtat",desc:"«ИИ-фикация бизнеса под ключ», 8 модулей. Чек в сотнях тысяч. Продажный пакет собран.",status:"ready",app:false,push:"Продажи встречами/звонками — топ выдачи не нужен. Кейсы портфеля = доказательство.",cost:"⏱ <b>3,5 ч</b> · 146 млн токенов · 33 документов · разработчику ≈12 дн"},
+    {name:"INNI",dom:"innisocial.ru",desc:"Соцсеть по микроинтересам: теги, сообщества, лента, геймификация с бонусами партнёров. Разработка на паузе, живая заявка на грант ИРИ.",status:"paused",app:false,push:"Грант ИРИ → на его деньги доводить продукт.",cost:"⏱ журналы сессий не сохранились · <b>1 317 строк кода</b> · разработчику ≈7 дн"},
+    {name:"Геопрогноз",dom:"концепт",desc:"Карта РФ, где для любой точки ИИ даёт предварительный прогноз грунтов и грунтовых вод по глубинам — до выезда изыскателей.",status:"concept",app:false,push:"Найти открытые данные изысканий → пилот по одному региону.",cost:"⏱ <b>2,8 ч</b> · 84 млн токенов · 360 документов · разработчику ≈21 дн"},
+  ]},
+  { flag:"🟢", title:"Готовые продукты B2C", desc:"Работают, ждут внешнего толчка.", tri:true, items:[
+    {name:"Здравник",dom:"zdravnikai.ru",desc:"Мед-ИИ: расшифровка анализов по фото + медкарта с памятью. @AILife0bot.",status:"live",app:true,traf:"5 виз",push:"Мед-сообщества, QR в клиниках, Дзен здоровья.",cost:"⏱ <b>1,9 ч</b> · 76 млн токенов · 116 документов · разработчику ≈42 дн"},
+    {name:"Идеальное резюме",dom:"podbor-ai.ru",desc:"Резюме под вакансию, проходящее ATS (RAG+DeepSeek). @idealresumebot.",status:"live",app:false,traf:"7 виз",push:"Карьерные сообщества, вузы, QR на ярмарках вакансий.",cost:"⏱ <b>3,3 ч</b> · 207 млн токенов · 93 документов · разработчику ≈24 дн"},
+    {name:"likvidnostai",dom:"likvidnostai.ru",desc:"Оценка «золотой цены» и ликвидности недвижимости (Уфа). @ocenka_ufa_bot.",status:"live",app:false,traf:"47 виз",push:"Риелторы, Авито, чаты недвижимости Уфы. (Золотая цена ждёт забор Avito.)",cost:"⏱ <b>20 ч</b> · 1,4 млрд токенов · 71 документов · разработчику ≈35 дн"},
+    {name:"HumanHack",dom:"humanhack.ru",desc:"«Дизайн человека» по дате рождения: тип энергии, бодиграф. @HumanHack_Bot.",status:"live",app:true,traf:"2 виз",push:"Эзотерика-сообщества, Reels, вирусные тесты.",cost:"⏱ <b>1,0 ч</b> · 87 млн токенов · 71 документов · разработчику ≈49 дн"},
+    {name:"DachAI / Усадьба",dom:"usadbai.ru",desc:"Лид-магнит ландшафтного дизайна: ИИ-зонирование участка.",status:"ready",app:true,push:"Дачные сообщества, сезон. Нужны токены.",cost:"⏱ журналы сессий не сохранились · <b>4 233 строк кода</b> · разработчику ≈21 дн"},
+    {name:"Стилист «Лукай»",dom:"stylai.ru",desc:"ИИ-стилист гардероба.",status:"ready",app:true,push:"Партнёрка магазинов, модные сообщества. Нужны токены.",cost:"⏱ журналы сессий не сохранились · <b>4 156 строк кода</b> · разработчику ≈21 дн"},
+    {name:"Квиток",dom:"sadai.online",desc:"Разбор ЖКХ-квитанций (эталон deep-link входа).",status:"ready",app:true,push:"Нужны токены. Соседские чаты, УК.",cost:"⏱ <b>3,2 ч</b> · 202 млн токенов · 37 документов · разработчику ≈37 дн"},
+    {name:"Калькулятор еды",dom:"Kalkulyator",desc:"Подсчёт калорий и еды (эталон initData-auth).",status:"ready",app:true,push:"Код бота дописывается. ЗОЖ-сообщества.",cost:"⏱ <b>2,0 ч</b> · 85 млн токенов · 16 документов · разработчику ≈16 дн"},
+    {name:"Все погнали",dom:"vsepognali.online",desc:"Поиск дешёвых авиабилетов (движок валидирован).",status:"ready",app:false,push:"Ждёт 4 токена. Travel-чаты, боты-каталоги.",cost:"⏱ <b>5,2 ч</b> · 187 млн токенов · 21 документов · разработчику ≈19 дн"},
+    {name:"Пульс покупок",dom:"Moi pokupki",desc:"Анализ трат по маркетплейсам (чеки ФНС по СМС).",status:"ready",app:true,push:"Рабочий личный инструмент; можно продуктизировать.",cost:"⏱ <b>4,3 ч</b> · 195 млн токенов · 32 документов · разработчику ≈51 дн"},
+    {name:"Миллиардо",dom:"milliardo.ru",desc:"Философский сайт-манифест «четыре богатства»: ум, материальное, душевное, физическое. Тёмная премиум-подача, своя типографика и символы. Личный проект-высказывание, не продуктовая воронка.",status:"live",app:false,push:"Смысловой якорь бренда: ссылка из визиток и презентаций, тексты-продолжения в Дзен.",cost:"⏱ <b>2,3 ч</b> · 148 млн токенов · 4 документов · разработчику ≈9 дн"},
+    {name:"Долетит?",dom:"радар аэропортов",desc:"Радар временных закрытий аэропортов европейской части РФ по их же табло + прогноз каскада задержек: какой рейс задержится и на сколько.",status:"live",app:false,push:"История копится с 03.09 — на ней строить прогноз и открывать бота.",cost:"⏱ <b>5,1 ч</b> · 404 млн токенов · 317 документов · разработчику ≈127 дн"},
+    {name:"ИИ по шагам",dom:"ai-shagi.ru",desc:"Обучающий портал карточками-инструкциями: одна задача = одна карточка, макет поверх живого экрана. 17 карточек, редизайн 03.09.",status:"live",app:false,push:"Реальные скриншоты вместо заглушек → Дзен-промо → набор аудитории.",cost:"⏱ <b>6,6 ч</b> · 379 млн токенов · 104 документов · разработчику ≈124 дн"},
+    {name:"МАГНАТ",dom:"деловая игра",desc:"Деловая игра «девелопер + нефтянка»: онлайн-мультиплеер, кабинеты, E2E-тесты зелёные.",status:"ready",app:false,push:"Играть с живыми командами — корпоративы, вузы."},
+    {name:"ЛИН-Лаб",dom:"тренажёр",desc:"Тренажёр бережливого производства: онлайн-кабинеты и турниры, есть офлайн-версия одним файлом.",status:"ready",app:false,push:"Продавать как корпоративное обучение."},
+    {name:"Искра",dom:"знакомства",desc:"Готовое приложение знакомств — актив, который можно запустить или продать целиком.",status:"ready",app:true,push:"Решить: запускать или продавать как готовый актив.",cost:"⏱ журналы сессий не сохранились · <b>1 317 строк кода</b> · разработчику ≈7 дн"},
+    {name:"VR-Эфир",dom:"vr-live",desc:"Живой показ помещения в VR-очках: удалённый просмотр квартиры или объекта в реальном времени. Стенд собран и проверен локально.",status:"ready",app:false,push:"Вынести стенд на сервер → показ застройщикам.",cost:"⏱ <b>1,8 ч</b> · 95 млн токенов · 8 документов · разработчику ≈7 дн"},
+    {name:"Аукцион",dom:"milliardo.online",desc:"Банкротные торги Башкирии.",status:"paused",app:false,push:"⏸ Пауза — нужен доступ к Федресурсу.",cost:"⏱ <b>0,2 ч</b> · 5 млн токенов · 34 документов · разработчику ≈27 дн"},
+  ]},
+  { flag:"🔧", title:"Мелкие / инструменты / трафик", desc:"Утилиты, трафик-сайты, медиа-серии.", tri:true, items:[
+    {name:"lemana-bot",dom:"families.lemanapro.ru",desc:"Автопостинг в журнал Лемана из фотоархива.",status:"live",app:false,push:"Рабочий, на сервере.",cost:"⏱ <b>8,9 ч</b> · 310 млн токенов · 85 документов · разработчику ≈22 дн"},
+            {name:"dzen-lab",dom:"Дзен",desc:"Каналы в Дзене + движок гипотез заголовков.",status:"ready",app:false,push:"Раскатать Дзен-версии статей флагманов.",cost:"⏱ <b>18 ч</b> · 1,6 млрд токенов · 13 тыс ячеек / 604 чисел · разработчику ≈22 дн"},
+    {name:"Боли-Радар",dom:"@Iniciativi_bot",desc:"Ежедневный поиск болей людей в новостях → идеи MVP.",status:"paused",app:false,push:"⏸ Пауза (экономия DeepSeek). Оживить — docker start.",cost:"⏱ <b>2,3 ч</b> · 74 млн токенов · 6 документов · разработчику ≈7 дн"},
+    {name:"Медиа-серии",dom:"VC · Дзен · Shorts",desc:"«Стартапер-факапер» (VC), «Домовой уехал» (тревел), Standup AI-комик.",status:"ready",app:false,push:"Контент-петли под соцкапитал.",cost:"⏱ <b>25 ч</b> · 1,7 млрд токенов · 60 документов · разработчику ≈10 дн"},
+    {name:"foto-arhiv",dom:"личный инструмент",desc:"Разбор фотоархива: поездки, стройка, документы, скриншоты и отдельно пароли-коды. Движок готов, CLIP ищет по смыслу.",status:"live",app:false,push:"Прогон по всему архиву → автозагрузка новых фото с телефона.",cost:"⏱ <b>15 ч</b> · 621 млн токенов · 149 тыс ячеек / 4 тыс чисел · разработчику ≈24 дн"},
+    {name:"trade-lab",dom:"эксперимент",desc:"Лаборатория торговых гипотез: сборщик стакана и сделок работает 24/7, бэктест с комиссиями. Реальных денег не касается.",status:"live",app:false,push:"Копить данные → вердикт арбитра по гипотезам.",cost:"⏱ <b>1,4 ч</b> · 32 млн токенов · 9 документов · разработчику ≈6 дн"},
+    {name:"lead-rag",dom:"прототип",desc:"RAG-лидогенератор: оценивает «тёплость» лида по нише и считает рекомендованную цену продажи. Тесты зелёные.",status:"ready",app:false,push:"Подключить реальные источники лидов или встроить в свои продукты."},
+    {name:"Заказы-Радар",dom:"@freelansai_bot",desc:"Мониторит фриланс-площадки и Telegram-каналы, ищет заказы на вайбкодинг, сайты, ботов.",status:"paused",app:false,push:"Поднять бота после переезда портфеля и нажать Start.",cost:"⏱ <b>2,0 ч</b> · 67 млн токенов · 4 документов · разработчику ≈6 дн"},
+    {name:"Грамотный текст",dom:"личный инструмент",desc:"Правит тексты без стилистической отсебятины — орфография и пунктуация, рабочий инструмент владельца.",status:"live",app:false,push:"Оставить как есть — работает.",cost:"⏱ <b>1,6 ч</b> · 85 млн токенов · 2 документов · разработчику ≈6 дн"},
+    {name:"VPN-инфраструктура",dom:"6 серверов · Европа",desc:"Развёрнута собственная VPN-инфраструктура на 6 серверах (AmneziaWG + Outline + VLESS/Reality); выдано 205 ключей, ~78 активных пользователей. Плюс личные облака на своих серверах с «кнопкой самоуничтожения».",status:"live",app:false,push:"Раздача ключей коллегам по QR (инструкция готова); держать диски и логи под контролем."},
+  ]},
+];
+
+document.getElementById("tiers").innerHTML = tiers.map(t=>`
+  <section>
+    <div class="shead"><span class="flag">${t.flag}</span><h2>${t.title}</h2><span class="count">${t.items.length}</span></div>
+    <p class="sdesc">${t.desc}</p>
+    <div class="cards ${t.tri?'tri':''}">
+      ${t.items.map(p=>{
+        const st = {live:['p-live','работает'],ready:['p-ready','готов, ждёт'],paused:['p-paused','пауза'],concept:['p-concept','концепт']}[p.status];
+        return `<div class="card ${p.flag?'flag':''}">
+          <div class="ctop"><h3>${p.name}</h3></div>
+          <div class="dom">${linkDom(p.dom)}</div>
+          <div class="desc">${linkDesc(p.desc)}</div>
+          <div class="badges">
+            <span class="pill ${st[0]}">${p.flag?'🏆 ':''}${st[1]}</span>
+            ${p.app?'<span class="pill p-app">📱 мини-апка</span>':''}
+            ${p.traf?`<span class="pill p-traf">${p.traf}</span>`:''}
+          </div>
+          <div class="push"><b>Разгон:</b> ${p.push}</div>
+          ${p.cost?`<div class="cost">${p.cost}</div>`:''}
+        </div>`;
+      }).join("")}
+    </div>
+  </section>`).join("");
+
+const b2b = [
+  {n:"Снабжение",dom:"amanatai.ru",d:"Фото/PDF заявки → распознаём → автоматчинг с номенклатурой 1С.",m:"26 009 строк · 78,9% сматчено · вручную 5 (было 3863)",cost:"⏱ <b>94 ч</b> · 7,6 млрд токенов · 6,2 млн ячеек / 1,0 млн чисел · разработчику ≈357 дн"},
+  {n:"КПЭ-дашборд",dom:"внутр.",d:"Сбор и проверка показателей отделов, HTML-дашборды.",m:"23 подразделения · 194 показателя · 237 человек",cost:"⏱ <b>17 ч</b> · 1,1 млрд токенов · 4,7 млн ячеек / 1,0 млн чисел · разработчику ≈116 дн"},
+  {n:"Предписания",dom:"ОТ + ТН боты",d:"Фото предписания → OCR+ИИ → Google-таблицы + Диск + рассылка.",m:"ТН 394 · ОТ 260 · 126 просрочек ловятся",cost:"⏱ <b>2,8 ч</b> · 140 млн токенов · 30 тыс ячеек / 3 тыс чисел · разработчику ≈12 дн"},
+  {n:"Корп-ассистент",dom:"RAG по базе знаний",d:"Внутренний ИИ-ассистент по базе знаний компании (RAG).",m:"21 аккаунт · 798 фрагментов из 173 файлов",cost:"⏱ <b>28 ч</b> · 2,0 млрд токенов · 10 документов · разработчику ≈26 дн"},
+  {n:"Plaud / meeting",dom:"внутр.",d:"Запись и расшифровка звонков/встреч → задачи в YouGile.",m:"68 расшифровок · доска 52 колонки / 260 задач",cost:"⏱ <b>25 ч</b> · 1,6 млрд токенов · 243 документов · разработчику ≈115 дн"},
+  {n:"Скан трудовой",dom:"kadriai.ru",d:"Фото трудовой → распознавание стажа → JSON.",m:"внутренний, закрытый",cost:"⏱ <b>5,1 ч</b> · 169 млн токенов · 4 документов · разработчику ≈9 дн"},
+  {n:"H2S / База Ильнура",dom:"внутр.",d:"Ассистент по сероводородной безопасности: база знаний из дисков инженера, расчёты отказов и условий.",m:"MVP, 168 тестов зелёные",cost:"⏱ <b>6,2 ч</b> · 419 млн токенов · 4 тыс ячеек / 2 тыс чисел · разработчику ≈56 дн"},
+  {n:"Credo",dom:"внутр.",d:"Оператор ТИМ КРЕДО: импорт-экспорт трасс, расчёты дорожного проектирования, RAG по нормам.",m:"инструмент команды дорожников",cost:"⏱ <b>5,3 ч</b> · 464 млн токенов · 43 документов · разработчику ≈26 дн"},
+  {n:"Geofizika",dom:"внутр.",d:"Авто-петрофизика по ГИС: разбор каротажа и выдача интерпретации.",m:"MVP, 16 тестов",cost:"⏱ <b>0,4 ч</b> · 17 млн токенов · 2 документов · разработчику ≈4 дн"},
+  {n:"Раздел 4 (Tehnologia)",dom:"внутр.",d:"Технология и организация строительства автодорог — методичка синтезирована, есть заготовки кода.",m:"ранняя стадия",cost:"⏱ <b>2,3 ч</b> · 184 млн токенов · 7 тыс ячеек / 3 тыс чисел · разработчику ≈9 дн"},
+  {n:"Письма проектировщиков",dom:"внутр.",d:"Систематизация входящих писем по разделам проекта → дашборд: где чего ждём.",m:"идея по анкете владельца"},
+];
+document.getElementById("b2bcount").textContent = b2b.length;
+document.getElementById("b2b").innerHTML = b2b.map(b=>`
+  <div class="row"><div class="bn">${b.n}<div class="dom">${linkDom(b.dom)}</div></div>
+  <div><div class="bd">${b.d}</div><div class="bm">${b.m}</div>
+  ${b.cost?`<div class="cost">${b.cost}</div>`:''}</div></div>`).join("");
+
+// theme toggle
+const btn=document.getElementById("themeBtn"), root=document.documentElement;
+let cur=null; try{cur=localStorage.getItem("pf-theme")}catch(e){}
+if(cur)root.setAttribute("data-theme",cur);
+btn.onclick=()=>{
+  const isDark = getComputedStyle(root).getPropertyValue("--ground").trim().startsWith("#1")||root.getAttribute("data-theme")==="dark";
+  const next = (root.getAttribute("data-theme")==="dark")?"light":(root.getAttribute("data-theme")==="light")?"dark":(isDark?"light":"dark");
+  root.setAttribute("data-theme",next);
+  try{localStorage.setItem("pf-theme",next)}catch(e){}
+};
+</script>
+<a href="/" style="position:fixed;bottom:14px;z-index:999;font:13px/1 -apple-system,'Segoe UI',Roboto,sans-serif;border-radius:999px;padding:9px 15px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.25);left:14px;background:rgba(0,0,0,.72);color:#fff">← на сайт FriendlyAI</a>
+<a href="/b2b/" style="position:fixed;bottom:14px;z-index:999;font:13px/1 -apple-system,'Segoe UI',Roboto,sans-serif;border-radius:999px;padding:9px 15px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.25);right:14px;background:#177A56;color:#fff">Кейс: ИИ внутри компании →</a>
